@@ -48,8 +48,4 @@ public class Swagger2 {
         return new ApiKey(TOKEN_HEADER, TOKEN_HEADER, "header");
     }
 
-    @Bean
-    SecurityConfiguration security() {
-        return new SecurityConfiguration(null, null, null, null, null, ApiKeyVehicle.HEADER, TOKEN_HEADER, ",");
-    }
 }

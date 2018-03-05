@@ -9,7 +9,7 @@ spring:
   application:
     name: app
   http:
-    multipart:
+    servlet:
       enabled: true
       max-file-size: 30Mb
       max-request-size: 100Mb
@@ -23,7 +23,6 @@ spring:
     host: 127.0.0.1
     port: 6379
     password:
-    timeout: 1800000
   aop:
     auto: true
   output:
@@ -59,7 +58,8 @@ spring:
   thymeleaf:
     mode: HTML5
     encoding: UTF-8
-    content-type: text/html
+    servlet:
+      content-type: text/html
     cache: false
 
 ---
