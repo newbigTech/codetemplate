@@ -1,10 +1,10 @@
 package com.newbig.codetemplate.app;
 
 import lombok.extern.slf4j.Slf4j;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+import tk.mybatis.spring.annotation.MapperScan;
 
 import static com.newbig.codetemplate.common.constant.AppConstant.PACKAGE_NAME;
 

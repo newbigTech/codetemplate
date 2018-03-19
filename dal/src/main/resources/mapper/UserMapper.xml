@@ -16,7 +16,7 @@
     <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
     <result column="gmt_modify" jdbcType="TIMESTAMP" property="gmtModify" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
-    <result column="gmt_modifier" jdbcType="VARCHAR" property="gmtModifier" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
     <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
   </resultMap>
 </mapper>

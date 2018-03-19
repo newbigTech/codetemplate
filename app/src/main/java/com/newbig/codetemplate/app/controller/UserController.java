@@ -50,6 +50,7 @@ public class UserController {
 
     @ApiOperation(value = "增加")
     @PostMapping(value = "/add")
+    @NoAuth
     public ResponseVo add(@Valid @RequestBody UserAddDto userAddDto){
         userService.addUser(userAddDto);
         return ResponseVo.success("保存成功");

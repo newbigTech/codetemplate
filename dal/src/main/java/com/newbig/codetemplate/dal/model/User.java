@@ -65,8 +65,8 @@ public class User {
     /**
      * 修改人
      */
-    @Column(name = "gmt_modifier")
-    private String gmtModifier;
+    @Column(name = "modifier")
+    private String modifier;
 
     /**
      * 是否已删除
@@ -269,17 +269,17 @@ public class User {
      *
      * @return gmt_modifier - 修改人
      */
-    public String getGmtModifier() {
-        return gmtModifier;
+    public String getModifier() {
+        return modifier;
     }
 
     /**
      * 设置修改人
      *
-     * @param gmtModifier 修改人
+     * @param modifier 修改人
      */
-    public void setGmtModifier(String gmtModifier) {
-        this.gmtModifier = gmtModifier;
+    public void setModifier(String modifier) {
+        this.modifier = modifier;
     }
 
     /**
