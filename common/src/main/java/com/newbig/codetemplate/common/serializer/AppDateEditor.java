@@ -1,6 +1,7 @@
 package com.newbig.codetemplate.common.serializer;
 
 import com.google.common.collect.Lists;
+import com.newbig.codetemplate.common.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 
@@ -13,16 +14,6 @@ import java.util.List;
  */
 @Slf4j
 public class AppDateEditor extends PropertyEditorSupport {
-    private static final List<String> formarts = Lists.newArrayList();
-
-    static {
-        formarts.add("yyyy-MM");
-        formarts.add("yyyy-MM-dd");
-        formarts.add("yyyy-MM-dd HH:mm");
-        formarts.add("yyyy-MM-dd HH:mm:ss");
-        formarts.add("yyyy-MM-ddTHH:mm");
-        formarts.add("yyyy-MM-ddTHH:mm:ss");
-    }
 
     private final boolean allowEmpty;
     private final int exactDateLength;
@@ -53,7 +44,7 @@ public class AppDateEditor extends PropertyEditorSupport {
 
     public Date convert(String source) {
         String value = source.trim();
-        if ("".equals(value)) {
+        if (StringUtil.isBlank(value)) {
             return null;
         }
         return parseDate(source);
