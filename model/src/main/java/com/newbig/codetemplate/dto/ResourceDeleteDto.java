@@ -18,7 +18,7 @@ import java.util.List;
 @ToString
 public class ResourceDeleteDto {
     @NotNull(message = "ids不能为空")
-    @Size(min = 1,message = "参数不能为空")
+    @Size(min = 1, message = "参数不能为空")
     private List<Long> ids;
 
 }

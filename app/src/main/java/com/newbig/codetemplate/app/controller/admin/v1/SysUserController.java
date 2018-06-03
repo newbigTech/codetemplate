@@ -1,13 +1,13 @@
 package com.newbig.codetemplate.app.controller.admin.v1;
 
-import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.PageSerializable;
 import com.newbig.codetemplate.common.constant.AppConstant;
 import com.newbig.codetemplate.dal.model.SysUser;
+import com.newbig.codetemplate.dto.SysUserAddDto;
+import com.newbig.codetemplate.dto.SysUserDeleteDto;
+import com.newbig.codetemplate.dto.SysUserUpdateDto;
 import com.newbig.codetemplate.service.SysUserService;
 import com.newbig.codetemplate.vo.ResponseVo;
-import com.newbig.codetemplate.dto.SysUserAddDto;
-import com.newbig.codetemplate.dto.SysUserUpdateDto;
-import com.newbig.codetemplate.dto.SysUserDeleteDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class SysUserController {
 
     @ApiOperation(value = "获取列表")
     @GetMapping(value = "/list")
-    public ResponseVo<PageInfo<SysUser>> getList(
+    public ResponseVo<PageSerializable<SysUser>> getList(
         @RequestParam(required = false,defaultValue = "1") int pageNum,
         @RequestParam(required = false,defaultValue = "20") int pageSize
     ){

@@ -12,7 +12,9 @@ import java.util.List;
 @Getter
 @ToString
 @ApiModel(value = "资源树")
-public class ResourceTreeVo{
+public class ResourceTreeVo {
+    @ApiModelProperty(name = "父节点")
+    public Integer parentId;
     @ApiModelProperty(name = "id")
     private Integer id;
     @ApiModelProperty(name = "资源名称")
@@ -25,8 +27,6 @@ public class ResourceTreeVo{
     private Integer sort;
     @ApiModelProperty(name = "权限控制用")
     private String spm;
-    @ApiModelProperty(name = "父节点")
-    public Integer parentId;
     @ApiModelProperty(name = "类型")
     private Integer type;
     @ApiModelProperty(name = "第几级")

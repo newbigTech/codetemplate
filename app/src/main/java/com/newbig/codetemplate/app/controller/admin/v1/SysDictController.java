@@ -1,13 +1,13 @@
 package com.newbig.codetemplate.app.controller.admin.v1;
 
-import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.PageSerializable;
 import com.newbig.codetemplate.common.constant.AppConstant;
 import com.newbig.codetemplate.dal.model.SysDict;
+import com.newbig.codetemplate.dto.SysDictAddDto;
+import com.newbig.codetemplate.dto.SysDictDeleteDto;
+import com.newbig.codetemplate.dto.SysDictUpdateDto;
 import com.newbig.codetemplate.service.SysDictService;
 import com.newbig.codetemplate.vo.ResponseVo;
-import com.newbig.codetemplate.dto.SysDictAddDto;
-import com.newbig.codetemplate.dto.SysDictUpdateDto;
-import com.newbig.codetemplate.dto.SysDictDeleteDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class SysDictController {
 
     @ApiOperation(value = "获取列表")
     @GetMapping(value = "/list")
-    public ResponseVo<PageInfo<SysDict>> getList(
+    public ResponseVo<PageSerializable<SysDict>> getList(
         @RequestParam(required = false,defaultValue = "1") int pageNum,
         @RequestParam(required = false,defaultValue = "20") int pageSize
     ){

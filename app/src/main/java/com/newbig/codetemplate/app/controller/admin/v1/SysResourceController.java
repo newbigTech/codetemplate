@@ -1,13 +1,13 @@
 package com.newbig.codetemplate.app.controller.admin.v1;
 
-import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.PageSerializable;
 import com.newbig.codetemplate.common.constant.AppConstant;
 import com.newbig.codetemplate.dal.model.SysResource;
+import com.newbig.codetemplate.dto.SysResourceAddDto;
+import com.newbig.codetemplate.dto.SysResourceDeleteDto;
+import com.newbig.codetemplate.dto.SysResourceUpdateDto;
 import com.newbig.codetemplate.service.SysResourceService;
 import com.newbig.codetemplate.vo.ResponseVo;
-import com.newbig.codetemplate.dto.SysResourceAddDto;
-import com.newbig.codetemplate.dto.SysResourceUpdateDto;
-import com.newbig.codetemplate.dto.SysResourceDeleteDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class SysResourceController {
 
     @ApiOperation(value = "获取列表")
     @GetMapping(value = "/list")
-    public ResponseVo<PageInfo<SysResource>> getList(
+    public ResponseVo<PageSerializable<SysResource>> getList(
         @RequestParam(required = false,defaultValue = "1") int pageNum,
         @RequestParam(required = false,defaultValue = "20") int pageSize
     ){

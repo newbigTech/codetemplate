@@ -1,13 +1,13 @@
 package com.newbig.codetemplate.app.controller.admin.v1;
 
-import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.PageSerializable;
 import com.newbig.codetemplate.common.constant.AppConstant;
 import com.newbig.codetemplate.dal.model.SysUserRole;
+import com.newbig.codetemplate.dto.SysUserRoleAddDto;
+import com.newbig.codetemplate.dto.SysUserRoleDeleteDto;
+import com.newbig.codetemplate.dto.SysUserRoleUpdateDto;
 import com.newbig.codetemplate.service.SysUserRoleService;
 import com.newbig.codetemplate.vo.ResponseVo;
-import com.newbig.codetemplate.dto.SysUserRoleAddDto;
-import com.newbig.codetemplate.dto.SysUserRoleUpdateDto;
-import com.newbig.codetemplate.dto.SysUserRoleDeleteDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class SysUserRoleController {
 
     @ApiOperation(value = "获取列表")
     @GetMapping(value = "/list")
-    public ResponseVo<PageInfo<SysUserRole>> getList(
+    public ResponseVo<PageSerializable<SysUserRole>> getList(
         @RequestParam(required = false,defaultValue = "1") int pageNum,
         @RequestParam(required = false,defaultValue = "20") int pageSize
     ){

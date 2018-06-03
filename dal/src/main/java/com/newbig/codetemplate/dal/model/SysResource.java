@@ -1,7 +1,7 @@
 package com.newbig.codetemplate.dal.model;
 
-import java.util.Date;
 import javax.persistence.*;
+import java.util.Date;
 
 @Table(name = "sys_resource")
 public class SysResource {

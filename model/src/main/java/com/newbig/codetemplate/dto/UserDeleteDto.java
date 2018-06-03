@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
+
 /**
  * User: Haibo
  * Date: 2018-01-22 20:48:10

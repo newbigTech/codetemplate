@@ -28,58 +28,94 @@ import static com.newbig.codetemplate.vo.ResponseVo.failure;
 @Slf4j
 public class AppControllerAdvice {
 
-    @ExceptionHandler(value = Exception.class)
+    @ExceptionHandler(value = UserRemindException.class)
     @ResponseBody
-    public ResponseVo<String> exception(Exception ex, HttpServletRequest request, HttpServletResponse response) {
-        log.error("uri:{},exception message:{}",request.getRequestURI(), ex);
+    public ResponseVo<String> exception(UserRemindException ex, HttpServletRequest request, HttpServletResponse response) {
+        log.error("uri:{},exception message:{}", request.getRequestURI(), ex);
         response.setCharacterEncoding("UTF-8"); //避免乱码
+        return failure(ex.getMessage());
+    }
 
-        if (ex instanceof UserRemindException) {
-            return failure(ex.getMessage());
-        } else if (ex instanceof DuplicateKeyException) {
-            Pattern pattern = Pattern.compile("Duplicate entry '(.*)' for key '(.*)'");
+    @ExceptionHandler(value = BindException.class)
+    @ResponseBody
+    public ResponseVo<String> exception(BindException ex, HttpServletRequest
+            request, HttpServletResponse response) {
+        log.error("uri:{},exception message:{}", request.getRequestURI(), ex);
+        response.setCharacterEncoding("UTF-8"); //避免乱码
+        BindingResult bindingResult = ((BindException) ex).getBindingResult();
+        return failure(bindingResult.getFieldErrors().get(0).getDefaultMessage());
+    }
+
+    @ExceptionHandler(value = MissingServletRequestParameterException.class)
+    @ResponseBody
+    public ResponseVo<String> exception(MissingServletRequestParameterException ex, HttpServletRequest
+            request, HttpServletResponse response) {
+        log.error("uri:{},exception message:{}", request.getRequestURI(), ex);
+        response.setCharacterEncoding("UTF-8"); //避免乱码
+        return failure("参数缺失");
+    }
+
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    @ResponseBody
+    public ResponseVo<String> exception(MethodArgumentNotValidException ex, HttpServletRequest
+            request, HttpServletResponse response) {
+        log.error("uri:{},exception message:{}", request.getRequestURI(), ex);
+        response.setCharacterEncoding("UTF-8"); //避免乱码
+        BindingResult bindingResult = ex.getBindingResult();
+        return failure(bindingResult.getFieldErrors().get(0).getField() + bindingResult.getFieldErrors().get(0).getDefaultMessage());
+        //只返回第一条
+    }
+
+    @ExceptionHandler(value = DataIntegrityViolationException.class)
+    @ResponseBody
+    public ResponseVo<String> exception(DataIntegrityViolationException ex, HttpServletRequest request, HttpServletResponse response) {
+        log.error("uri:{},exception message:{}", request.getRequestURI(), ex);
+        response.setCharacterEncoding("UTF-8"); //避免乱码
+        if (ex.getCause().getMessage().contains("Data too long for column")) {
+            Pattern pattern = Pattern.compile(".*Data too long for column '(.*)' at row.*");
             Matcher matcher = pattern.matcher(ex.getCause().getMessage());
             if (matcher.matches()) {
-                String key = matcher.group(2);
-                String value = matcher.group(1);
-                return failure(key.replace("_UNIQUE", "") + ":" + value + " 已存在，请修改后重新添加");
-            } else {
-                return failure("系统有重复数据");
+                String key = matcher.group(1);
+                return failure("字段[" + key + "]长度超出数据库限制");
             }
-        } else if (ex instanceof DataIntegrityViolationException) {
-            if (ex.getCause().getMessage().contains("Data too long for column")) {
-                Pattern pattern = Pattern.compile(".*Data too long for column '(.*)' at row.*");
-                Matcher matcher = pattern.matcher(ex.getCause().getMessage());
-                if (matcher.matches()) {
-                    String key = matcher.group(1);
-                    return failure("字段[" + key + "]长度超出数据库限制");
-                }
-                return failure("某些字段长度超出数据库限制");
-            } else if (ex.getCause().getMessage().contains("doesn't have a default value")) {
-                Pattern pattern = Pattern.compile(".*Field '(.*)' doesn't have a default value.*");
-                Matcher matcher = pattern.matcher(ex.getCause().getMessage());
-                if (matcher.matches()) {
-                    String key = matcher.group(1);
-                    return failure("字段[" + key + "]没有默认值");
-                }
-                return failure("某些字段没有默认值");
-            } else {
-                return failure(ex.getCause().getMessage());
+            return failure("某些字段长度超出数据库限制");
+        } else if (ex.getCause().getMessage().contains("doesn't have a default value")) {
+            Pattern pattern = Pattern.compile(".*Field '(.*)' doesn't have a default value.*");
+            Matcher matcher = pattern.matcher(ex.getCause().getMessage());
+            if (matcher.matches()) {
+                String key = matcher.group(1);
+                return failure("字段[" + key + "]没有默认值");
             }
-        } else if (ex instanceof MethodArgumentNotValidException) {
-            BindingResult bindingResult = ((MethodArgumentNotValidException) ex).getBindingResult();
-            return failure(bindingResult.getFieldErrors().get(0).getField() + bindingResult.getFieldErrors().get(0).getDefaultMessage());
-            //只返回第一条
-        } else if (ex instanceof MissingServletRequestParameterException) {
-            return failure("参数缺失");
-        } else if (ex instanceof BindException) {
-            BindingResult bindingResult = ((BindException) ex).getBindingResult();
-            return failure(bindingResult.getFieldErrors().get(0).getDefaultMessage());
+            return failure("某些字段没有默认值");
         } else {
-            return failure("系统异常");
+            return failure(ex.getCause().getMessage());
         }
     }
 
+    @ExceptionHandler(value = DuplicateKeyException.class)
+    @ResponseBody
+    public ResponseVo<String> duplicateKeyException(DuplicateKeyException ex, HttpServletRequest request, HttpServletResponse response) {
+        log.error("uri:{},exception message:{}", request.getRequestURI(), ex);
+        response.setCharacterEncoding("UTF-8"); //避免乱码
+        Pattern pattern = Pattern.compile("Duplicate entry '(.*)' for key '(.*)'");
+        Matcher matcher = pattern.matcher(ex.getCause().getMessage());
+        if (matcher.matches()) {
+            String key = matcher.group(2);
+            String value = matcher.group(1);
+            return failure(key.replace("_UNIQUE", "") + ":" + value + " 已存在，请修改后重新添加");
+        } else {
+            return failure("系统有重复数据");
+        }
+    }
+
+    @ExceptionHandler(value = Exception.class)
+    @ResponseBody
+    public ResponseVo<String> exception(Exception ex, HttpServletRequest
+            request, HttpServletResponse response) {
+        log.error("uri:{},exception message:{}", request.getRequestURI(), ex);
+        response.setCharacterEncoding("UTF-8"); //避免乱码
+        return failure("系统异常");
+    }
 
     @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {

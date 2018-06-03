@@ -4,8 +4,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -38,7 +38,7 @@ public class ResourceAddDto {
     @ApiModelProperty(name = "spm")
     @NotEmpty(message = "spm不能为空")
     private String spm;
-//    @ApiModelProperty(name = "是否有子菜单")
+    //    @ApiModelProperty(name = "是否有子菜单")
 //    @NotNull(message = "是否有子菜单不能为空")
 //    private Boolean noDropdown;
 //    @ApiModelProperty(name = "组件")
