@@ -1,7 +1,6 @@
 package ${basePackage}.dto;
 
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;

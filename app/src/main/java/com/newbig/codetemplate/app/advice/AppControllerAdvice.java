@@ -31,7 +31,7 @@ public class AppControllerAdvice {
     @ExceptionHandler(value = UserRemindException.class)
     @ResponseBody
     public ResponseVo<String> exception(UserRemindException ex, HttpServletRequest request, HttpServletResponse response) {
-        log.error("uri:{},exception message:{}", request.getRequestURI(), ex);
+        log.error("uri:{},exception message:{}", request.getRequestURI(), ex.getMessage());
         response.setCharacterEncoding("UTF-8"); //避免乱码
         return failure(ex.getMessage());
     }

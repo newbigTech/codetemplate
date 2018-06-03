@@ -1,13 +1,13 @@
 package com.newbig.codetemplate.app.controller.admin.v1;
 
-import com.github.pagehelper.PageSerializable;
+import com.github.pagehelper.PageInfo;
 import com.newbig.codetemplate.common.constant.AppConstant;
-import com.newbig.codetemplate.dal.model.SysUser;
-import com.newbig.codetemplate.dto.SysUserAddDto;
-import com.newbig.codetemplate.dto.SysUserDeleteDto;
-import com.newbig.codetemplate.dto.SysUserUpdateDto;
-import com.newbig.codetemplate.service.SysUserService;
+import com.newbig.codetemplate.dal.model.SysOrg;
+import com.newbig.codetemplate.service.SysOrgService;
 import com.newbig.codetemplate.vo.ResponseVo;
+import com.newbig.codetemplate.dto.SysOrgAddDto;
+import com.newbig.codetemplate.dto.SysOrgUpdateDto;
+import com.newbig.codetemplate.dto.SysOrgDeleteDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -18,52 +18,52 @@ import javax.validation.Valid;
 
 /**
  * User: Haibo
- * Date: 2018-05-01 10:05:30
+ * Date: 2018-06-03 15:50:00
  * Desc:
  */
 @RestController
 @Slf4j
-@RequestMapping(value = AppConstant.API_PREFIX_V1+"/sysUser")
-@Api(value = "sysUser相关api.")
-public class SysUserController {
+@RequestMapping(value = AppConstant.API_PREFIX_V1+"/sysOrg")
+@Api(value = "sysOrg相关api.")
+public class SysOrgController {
     @Resource
-    private SysUserService sysUserService;
+    private SysOrgService sysOrgService;
 
     @ApiOperation(value = "获取列表")
     @GetMapping(value = "/list")
-    public ResponseVo<PageSerializable<SysUser>> getList(
+    public ResponseVo<PageInfo<SysOrg>> getList(
         @RequestParam(required = false,defaultValue = "1") int pageNum,
         @RequestParam(required = false,defaultValue = "20") int pageSize
     ){
-        return ResponseVo.success(sysUserService.getList(pageSize,pageNum));
+        return ResponseVo.success(sysOrgService.getList(pageSize,pageNum));
     }
 
     @ApiOperation(value = "获取详情")
     @GetMapping(value = "/get")
-    public ResponseVo<SysUser> getDetail(
+    public ResponseVo<SysOrg> getDetail(
         @RequestParam(required = false) Integer id ){
-        return ResponseVo.success(sysUserService.getDetailById(id));
+        return ResponseVo.success(sysOrgService.getDetailById(id));
     }
 
     @ApiOperation(value = "增加")
     @PostMapping(value = "/add")
-    public ResponseVo add(@Valid @RequestBody SysUserAddDto sysUserAddDto){
-        sysUserService.addSysUser(sysUserAddDto);
+    public ResponseVo add(@Valid @RequestBody SysOrgAddDto sysOrgAddDto){
+        sysOrgService.addSysOrg(sysOrgAddDto);
         return ResponseVo.success("保存成功");
     }
 
     @ApiOperation(value = "更新")
     @PostMapping(value = "/update")
-    public ResponseVo update(@Valid @RequestBody SysUserUpdateDto sysUserUpdateDto){
-        sysUserService.updateSysUser(sysUserUpdateDto);
+    public ResponseVo update(@Valid @RequestBody SysOrgUpdateDto sysOrgUpdateDto){
+        sysOrgService.updateSysOrg(sysOrgUpdateDto);
         return ResponseVo.success("更新成功");
     }
 
 
     @ApiOperation(value = "删除")
     @PostMapping(value = "/delete")
-    public ResponseVo delete(@Valid @RequestBody SysUserDeleteDto sysUserDeleteDto){
-        sysUserService.deleteSysUser(sysUserDeleteDto.getId());
+    public ResponseVo delete(@Valid @RequestBody SysOrgDeleteDto sysOrgDeleteDto){
+        sysOrgService.deleteSysOrg(sysOrgDeleteDto.getId());
         return ResponseVo.success("删除成功");
     }
 }

@@ -24,7 +24,7 @@ import javax.validation.Valid;
 @RestController
 @Slf4j
 @RequestMapping(value = AppConstant.API_PREFIX_V1+"/sysDict")
-@Api(value = "sysDict相关api.", tags = {"sysDict"})
+@Api(value = "sysDict相关api.")
 public class SysDictController {
     @Resource
     private SysDictService sysDictService;

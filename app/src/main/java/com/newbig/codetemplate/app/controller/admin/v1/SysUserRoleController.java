@@ -24,7 +24,7 @@ import javax.validation.Valid;
 @RestController
 @Slf4j
 @RequestMapping(value = AppConstant.API_PREFIX_V1+"/sysUserRole")
-@Api(value = "sysUserRole相关api.", tags = {"sysUserRole"})
+@Api(value = "sysUserRole相关api.")
 public class SysUserRoleController {
     @Resource
     private SysUserRoleService sysUserRoleService;

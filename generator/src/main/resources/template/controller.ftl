@@ -1,6 +1,6 @@
 package ${basePackage}.app.controller;
 
-import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.PageSerializable;
 import ${basePackage}.common.constant.AppConstant;
 import ${basePackage}.dal.model.${modelNameUpperCamel};
 import ${basePackage}.service.${modelNameUpperCamel}Service;
@@ -31,7 +31,7 @@ public class ${modelNameUpperCamel}Controller {
 
     @ApiOperation(value = "获取列表")
     @GetMapping(value = "/list")
-    public ResponseVo<PageInfo<${modelNameUpperCamel}>> getList(
+    public ResponseVo<PageSerializable<${modelNameUpperCamel}>> getList(
         @RequestParam(required = false,defaultValue = "1") int pageNum,
         @RequestParam(required = false,defaultValue = "20") int pageSize
     ){

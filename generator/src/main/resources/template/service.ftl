@@ -1,7 +1,7 @@
 package ${basePackage}.service;
 
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.PageSerializable;
 import ${basePackage}.dto.${modelNameUpperCamel}AddDto;
 import ${basePackage}.dto.${modelNameUpperCamel}UpdateDto;
 import ${basePackage}.dto.${modelNameUpperCamel}DeleteDto;
@@ -30,13 +30,13 @@ public class ${modelNameUpperCamel}Service {
      * @param pageNum
      * @return
      */
-    public PageInfo<${modelNameUpperCamel}> getList(int pageSize,int pageNum){
+    public PageSerializable<${modelNameUpperCamel}> getList(int pageSize,int pageNum){
         PageHelper.startPage(pageNum,pageSize);
         Example example = new Example(${modelNameUpperCamel}.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("isDeleted",0);
         List<${modelNameUpperCamel}> list = ${modelNameLowerCamel}Mapper.selectByExample(example);
-        return new PageInfo<>(list);
+        return new PageSerializable<>(list);
     }
 
     /**
