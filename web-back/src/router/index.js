@@ -35,7 +35,6 @@ export const constantRouterMap = [
   {
     path: '',
     component: Layout,
-    name: '首页',
     redirect: 'dashboard',
     icon: 'dashboard',
     noDropdown: true,
@@ -55,24 +54,6 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
-  {
-    path: '/query',
-    component: Layout,
-    redirect: '/query/index',
-    name: '查询',
-    icon: 'qq',
-    meta: { roles: ['admin'] }, // you can set roles in root nav
-    children: [{
-      path: 'index',
-      component: _import('query/index'),
-      name: '查询',
-      icon: 'bug',
-      meta: {
-        title: 'query',
-        roles: ['admin'] // or you can only set roles in sub nav
-      }
-    }]
-  },
   {
     spm: '0007.0000.0000.0000',
     path: '/sysadmin',

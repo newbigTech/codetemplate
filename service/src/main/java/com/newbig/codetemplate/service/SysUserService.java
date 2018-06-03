@@ -89,4 +89,10 @@ public class SysUserService {
         sysUser.setId(id);
         sysUserMapper.updateByPrimaryKeySelective(sysUser);
     }
+
+    public SysUser getUserByMobile(String mobile) {
+        SysUser sysUser = new SysUser();
+        sysUser.setMobile(mobile);
+        return sysUserMapper.selectOne(sysUser);
+    }
 }

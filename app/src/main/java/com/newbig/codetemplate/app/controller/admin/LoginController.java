@@ -2,9 +2,14 @@ package com.newbig.codetemplate.app.controller.admin;
 
 import com.newbig.codetemplate.common.annotation.NoAuth;
 import com.newbig.codetemplate.common.constant.AppConstant;
+import com.newbig.codetemplate.common.exception.UserRemindException;
+import com.newbig.codetemplate.common.utils.JwtUtil;
+import com.newbig.codetemplate.dal.model.SysUser;
 import com.newbig.codetemplate.dto.LoginDto;
+import com.newbig.codetemplate.service.SysUserService;
 import com.newbig.codetemplate.vo.ResponseVo;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,19 +26,18 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = AppConstant.API_PREFIX_V1)
 public class LoginController {
-//    @Autowired
-//    private UserService userService;
+    @Autowired
+    private SysUserService sysUserService;
     @PostMapping(value = "/doLogin")
     @ApiOperation(value = "1-1 用户登录", notes = " ",response = ResponseVo.class)
     @NoAuth
     public ResponseVo<Map<String,String>> doLogin(@Valid @RequestBody LoginDto loginDto) {
-//        User user = userService.getUserByMobile(loginDto.getMobile());
-//        if(null == user){
-//            return ResponseVo.failure("用户不存在");
-//        }
-//        String token = JwtUtil.genToken(user.getMobile(),user.getUserId());
-//        return ResponseVo.success(token);
-        return null;
+        SysUser user = sysUserService.getUserByMobile(loginDto.getMobile());
+        if(null == user){
+            throw new UserRemindException("用户不存在");
+        }
+        String token = JwtUtil.genToken(user.getMobile(),user.getUserId());
+        return ResponseVo.success(token);
     }
 
     /**

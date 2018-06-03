@@ -1,12 +1,12 @@
 import request from '@/utils/request'
 
-export function loginByUsername(username, password) {
+export function loginByUsername(mobile, password) {
   const data = {
-    username,
+    mobile,
     password
   }
   return request({
-    url: '/login/login',
+    url: '/api/v1/doLogin',
     method: 'post',
     data
   })

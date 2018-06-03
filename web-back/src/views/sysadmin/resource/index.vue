@@ -71,7 +71,7 @@
   import panel from '@/components/panel.vue'
   import selectTree from '@/components/selectTree.vue'
   import treeter from '@/components/treeter'
-
+  import fetchList from '@/api/resource.js'
   export default {
     mixins: [treeter],
     components: {
@@ -198,10 +198,10 @@
         }
       },
       getResourceTree() {
-        fetch(api.SYS_RESOURCE_TREE)
+        fetchList()
           .then(res => {
             this.resourceTree = []
-            this.resourceTree.push(...res.data.result)
+            // this.resourceTree.push(...res.data.result)
           })
       }
     },

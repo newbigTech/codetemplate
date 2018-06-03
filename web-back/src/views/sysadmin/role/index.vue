@@ -168,11 +168,11 @@ export default {
       this.listLoading = true
       const begin = this.listQuery.gmtBegin === '' ? '' : moment(this.listQuery.gmtBegin).format('YYYY-MM-DD HH:mm:ss')
       const end = this.listQuery.gmtEnd === '' ? '' : moment(this.listQuery.gmtEnd).format('YYYY-MM-DD HH:mm:ss')
-      request('/sysRole/list' + '?name=' + this.listQuery.name + '&gmtBegin=' + begin + '&gmtEnd=' + end +
+      request('/api/v1/sysUserRole/list' + '?name=' + this.listQuery.name + '&gmtBegin=' + begin + '&gmtEnd=' + end +
         '&pageSize=' + this.listQuery.limit + '&pageNum=' + this.listQuery.page)
         .then(res => {
-          this.list = res.data.result.list
-          this.total = res.data.result.total
+          // this.list = res.data.result.list
+          // this.total = res.data.result.total
           this.listLoading = false
         })
     },

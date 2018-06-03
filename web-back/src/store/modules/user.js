@@ -1,4 +1,4 @@
-// import { loginByUsername, logout } from '@/api/login'
+import { loginByUsername } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 // import request from '@/utils/request'
 
@@ -46,20 +46,20 @@ const user = {
 
   actions: {
     // 用户名登录
-    LoginByUsername({ commit }, userInfo) {
-      // const username = userInfo.username.trim()
+    LoginByMobile({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
-        commit('SET_TOKEN', 'data.token')
-        setToken('data.token')
-        resolve()
-        // loginByUsername(username, userInfo.password).then(response => {
-        //   const data = response.data
-        //   commit('SET_TOKEN', data.token)
-        //   setToken(response.data.token)
-        //   resolve()
-        // }).catch(error => {
-        //   reject(error)
-        // })
+        // commit('SET_TOKEN', 'data.token')
+        // setToken('data.token')
+        // resolve()
+        console.log(userInfo)
+        loginByUsername(userInfo.mobile.trim(), userInfo.password.trim()).then(response => {
+          const data = response.data
+          commit('SET_TOKEN', data.result)
+          setToken(data.result)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
       })
     },
 

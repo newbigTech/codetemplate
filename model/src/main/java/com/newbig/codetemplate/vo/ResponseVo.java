@@ -30,6 +30,9 @@ public class ResponseVo<T> {
     }
 
     public static ResponseVo failure(String message) {
-        return new ResponseVo(200, Boolean.FALSE, message, null);
+        return new ResponseVo(500, Boolean.FALSE, message, null);
+    }
+    public static ResponseVo failure(String message,String url) {
+        return new ResponseVo(500, Boolean.FALSE, message, url);
     }
 }

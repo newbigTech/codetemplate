@@ -29,10 +29,10 @@
       :readonly='multiple'
       :validate-event='false'
       @focus='visible = true'
-      @click='handleIconClick'
+      @on-icon-click='handleIconClick'
       @mouseenter.native='inputHovering = true'
       @mouseleave.native='inputHovering = false'
-      :icon='iconClass'>
+      :suffix-icon='iconClass'>
     </el-input>
     <transition
       name='el-zoom-in-top'
