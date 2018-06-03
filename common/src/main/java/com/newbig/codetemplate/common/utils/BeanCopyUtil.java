@@ -3,6 +3,7 @@ package com.newbig.codetemplate.common.utils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.util.CollectionUtils;
 
@@ -71,18 +72,21 @@ public class BeanCopyUtil {
      * @param targetClass
      * @throws Exception
      */
-    public static void copyList(List<?> source, List target, Class<?> targetClass) throws IllegalAccessException, InstantiationException {
+    public static void copyList(List<?> source, List target, Class<?> targetClass) {
 
         if (CollectionUtils.isEmpty(source) || target == null) {
             return;
         }
 
         for (Object obj : source) {
+            try {
+                Object targetObject = targetClass.newInstance();
+                copyProperties(obj, targetObject);
 
-            Object targetObject = targetClass.newInstance();
-            copyProperties(obj, targetObject);
-
-            target.add(targetObject);
+                target.add(targetObject);
+            }catch (Exception e){
+                log.error(ExceptionUtils.getStackTrace(e));
+            }
         }
     }
 

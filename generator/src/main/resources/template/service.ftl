@@ -2,8 +2,6 @@ package ${basePackage}.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import ${basePackage}.dal.mapper.UserMapper;
-import ${basePackage}.dal.model.User;
 import ${basePackage}.dto.${modelNameUpperCamel}AddDto;
 import ${basePackage}.dto.${modelNameUpperCamel}UpdateDto;
 import ${basePackage}.dto.${modelNameUpperCamel}DeleteDto;

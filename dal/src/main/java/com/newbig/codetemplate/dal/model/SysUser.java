@@ -1,12 +1,10 @@
 package com.newbig.codetemplate.dal.model;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.util.Date;
+import javax.persistence.*;
 
-public class User {
+@Table(name = "sys_user")
+public class SysUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -65,7 +63,6 @@ public class User {
     /**
      * 修改人
      */
-    @Column(name = "modifier")
     private String modifier;
 
     /**
@@ -267,7 +264,7 @@ public class User {
     /**
      * 获取修改人
      *
-     * @return gmt_modifier - 修改人
+     * @return modifier - 修改人
      */
     public String getModifier() {
         return modifier;

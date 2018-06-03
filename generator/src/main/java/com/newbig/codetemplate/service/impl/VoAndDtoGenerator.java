@@ -41,7 +41,7 @@ public class VoAndDtoGenerator extends CodeGeneratorManager implements CodeGener
         String path=PROJECT_PATH +File.separator+"dal"+JAVA_PATH+File.separator+MODEL_PACKAGE.replace(".",File.separator)+File.separator;
         try {
             CompilationUnit compilationUnit = JavaParser.parse(
-                    new File(path+tableName+".java"));
+                    new File(path+modelNameUpperCamel+".java"));
             compilationUnit.accept(new VariableVisitor(), null);
             Map<String,Object> data = Maps.newHashMap();
             data.put("date", DATE);

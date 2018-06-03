@@ -16,7 +16,8 @@
 * 公共字段
 * 权限管理
 * 日志
-
+### 前端
+基于 https://github.com/PanJiaChen/vue-element-admin修改
 ### 生成项目模板
 ```
 mvn clean install

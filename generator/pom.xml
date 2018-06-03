@@ -42,5 +42,10 @@
             <artifactId>javaparser-core</artifactId>
             <version>3.5.11</version>
         </dependency>
+        <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper-generator</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 </project>

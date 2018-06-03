@@ -23,7 +23,7 @@ router.beforeEach((to, from, next) => {
         store.dispatch('GetUserInfo').then(res => { // 拉取user_info
           // const roles = res.data.role
           // console.log()
-          store.dispatch('GenerateRoutes', { }).then(() => { // 生成可访问的路由表
+          store.dispatch('GenerateRoutes', { type: 1 }).then(() => { // 生成可访问的路由表
             router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
             next({ ...to }) // hack方法 确保addRoutes已完成
           })

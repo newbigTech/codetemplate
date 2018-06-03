@@ -1,16 +1,13 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
     <h3 class="left-menu">后台管理系统</h3>
-    <!--<el-tabs v-model="activeName" @tab-click="handleClick"-->
-             <!--style="display: inline-block; margin-top: 0px;">-->
-      <!--&lt;!&ndash;<el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>&ndash;&gt;-->
-      <!--&lt;!&ndash;<el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>&ndash;&gt;-->
-      <!--&lt;!&ndash;<el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>&ndash;&gt;-->
-      <!--&lt;!&ndash;<el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>&ndash;&gt;-->
-    <!--</el-tabs>-->
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
     <!--<breadcrumb class="breadcrumb-container"></breadcrumb>-->
-
+    <el-menu :default-active="activeIndex" mode="horizontal" @select="handleSelect"
+             style="display: inline-block; margin-top: 0px; margin-left: 50px">
+      <el-menu-item style="display: inline-block;" index="1">处理中心</el-menu-item>
+      <el-menu-item style="display: inline-block;" index="2">消息中心</el-menu-item>
+    </el-menu>
     <div class="right-menu">
       <error-log class="errLog-container right-menu-item"></error-log>
 
@@ -50,7 +47,10 @@ import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 import ThemePicker from '@/components/ThemePicker'
 import store from '@/store'
+import NProgress from 'nprogress' // progress bar
+import 'nprogress/nprogress.css'// progress bar style
 
+NProgress.configure({ showSpinner: false })// NProgress Configuration
 export default {
   components: {
     Breadcrumb,
@@ -62,6 +62,8 @@ export default {
   data() {
     return {
       userName: '',
+      activeIndex: '1',
+      activeIndex2: '1',
       avatarImage: ''
     }
   },
@@ -77,6 +79,13 @@ export default {
   methods: {
     toggleSideBar() {
       this.$store.dispatch('toggleSideBar')
+    },
+    handleSelect(key, keyPath) {
+      console.log('sdsd', key, keyPath)
+      // 重新生成路由
+      // store.dispatch('GenerateRoutes', { type: key }).then(() => { // 生成可访问的路由表
+      //   router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+      // })
     },
     logout() {
       this.$store.dispatch('LogOut').then(() => {

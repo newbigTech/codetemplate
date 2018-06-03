@@ -37,11 +37,13 @@ export const constantRouterMap = [
     component: Layout,
     name: '首页',
     redirect: 'dashboard',
+    icon: 'dashboard',
+    noDropdown: true,
     children: [{
       path: 'dashboard',
       component: _import('dashboard/index'),
-      name: 'dashboard',
-      meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
+      name: '首页',
+      meta: { title: 'dashboard', noCache: true }
     }]
   }
 ]
@@ -58,11 +60,49 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/query/index',
     name: '查询',
+    icon: 'qq',
     meta: { roles: ['admin'] }, // you can set roles in root nav
     children: [{
       path: 'index',
       component: _import('query/index'),
       name: '查询',
+      icon: 'bug',
+      meta: {
+        title: 'query',
+        roles: ['admin'] // or you can only set roles in sub nav
+      }
+    }]
+  },
+  {
+    spm: '0007.0000.0000.0000',
+    path: '/sysadmin',
+    component: Layout,
+    redirect: '/sysadmin/account/index',
+    name: '系统管理',
+    icon: 'qq',
+    children: [
+      // { path: 'account', icon: 'zujian', spm: '0007.0001.0000.0000', component: _import('sysadmin/account/index'), name: '账户管理 ' },
+      { path: 'role', icon: 'tab', spm: '0007.0003.0000.0000', component: _import('sysadmin/role/index'), name: '角色管理' },
+      // { path: 'permission', icon: 'zujian', component: _import('sysadmin/permission/index'), name: '权限管理' },
+      { path: 'resource', icon: 'table', spm: '0007.0004.0000.0000', component: _import('sysadmin/resource/index'), name: '资源管理' }
+      // { path: 'dict', icon: 'zujian', spm: '0007.0005.0000.0000', component: _import('sysadmin/dict/index'), name: '数据字典' }
+    ]
+  },
+  { path: '*', redirect: '/404', hidden: true }
+]
+
+export const asyncRouterMap2 = [
+  {
+    path: '/query1',
+    component: Layout,
+    redirect: '/query1/index',
+    name: 'testttt',
+    icon: 'form',
+    meta: { roles: ['admin'] }, // you can set roles in root nav
+    children: [{
+      path: 'index',
+      component: _import('query/index'),
+      name: 'qtreeee',
       meta: {
         title: 'query',
         icon: 'form',
