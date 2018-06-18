@@ -36,6 +36,7 @@ service.interceptors.response.use(function(response) {
   })
   // console.log(res)
   if (status === 401) {
+    // 原来的token 可能是错的,需要删除
     removeToken()
     // iam 未登录错误
     window.location.href = res.result

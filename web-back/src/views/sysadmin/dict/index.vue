@@ -1,223 +1,213 @@
 <template>
-  <imp-panel>
-    <h3 class='box-title' slot='header' style='width: 100%;'>
-      <el-button type='primary' icon='plus' @click='newAdd'>新增</el-button>
-      <el-button type='danger' icon='delete' @click='batchDelete'>删除</el-button>
-    </h3>
-    <el-row slot='body' style='margin-bottom: 20px;' :gutter='24'>
-      <el-col :span='6' :xs='24' :sm='24' :md='6' :lg='6' style='margin-bottom: 20px;'>
-        <el-tree v-if="resourceTree" ref="resourceTree" :data="resourceTree" show-checkbox highlight-current :render-content="renderContent"
-                 @node-click="handleNodeClick" clearable node-key="id" :props="defaultProps">
-        </el-tree>
-      </el-col>
-      <el-col :span='18' :xs='24' :sm='24' :md='18' :lg='18'>
-        <el-card class='box-card'>
-          <!--<div slot='header' class='clearfix'>-->
-          <!--<el-button type='primary' style='float: right;' @click='dialogFormVisible = true'><i class='el-icon-plus'></i></el-button>-->
-          <!--&lt;!&ndash;<el-button type='primary' @click='editSelectedMenu' icon='edit'></el-button>&ndash;&gt;-->
-          <!--&lt;!&ndash;<el-button type='primary' @click='deleteSelectedMenu' icon='delete'></el-button>&ndash;&gt;-->
-          <!--</div>-->
-          <div class='text item'>
-            <el-form :model='form' ref='form'>
-              <el-form-item label='父级' :label-width='formLabelWidth'>
-                <!--<el-input v-model='form.parentId' auto-complete='off'></el-input>-->
-                <el-select-tree v-model='form.parentId' :treeData='resourceTree' :propNames='defaultProps' clearable
-                                placeholder='请选择父级'>
-                </el-select-tree>
-              </el-form-item>
-              <el-form-item label='名称' :label-width='formLabelWidth'>
-                <el-input v-model='form.name' auto-complete='off'></el-input>
-              </el-form-item>
-              <el-form-item label='代码' :label-width='formLabelWidth'>
-                <el-input v-model='form.code' auto-complete='off'></el-input>
-              </el-form-item>
-              <el-form-item label='类型' :label-width='formLabelWidth'>
-                <el-radio class='radio' v-model='form.type' :label='1'>菜单</el-radio>
-                <el-radio class='radio' v-model='form.type' :label='2'>按钮</el-radio>
-                <el-radio class='radio' v-model='form.type' :label='3'>功能</el-radio>
-              </el-form-item>
-              <el-form-item label='是否生效' :label-width='formLabelWidth'>
-                <el-radio class='radio' v-model='form.usable' label='1'>是</el-radio>
-                <el-radio class='radio' v-model='form.usable' label='0'>否</el-radio>
-              </el-form-item>
-              <el-form-item label='排序' :label-width='formLabelWidth'>
-                <el-slider v-model='form.sort'></el-slider>
-              </el-form-item>
-              <el-form-item label='备注' :label-width='formLabelWidth'>
-                <el-input v-model='form.remarks' auto-complete='off'></el-input>
-              </el-form-item>
-              <el-form-item label='' :label-width='formLabelWidth'>
-                <el-button type='primary' @click='onSubmit' v-text="form.id ? '修改':'新增'"></el-button>
-                <el-button type='danger' @click='deleteSelected' icon='delete' v-show='form.id && form.id!=null'>删除
-                </el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
-  </imp-panel>
+  <div class="app-container calendar-list-container">
+    <div class="filter-container">
+      <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="类别" v-model="listQuery.category">
+      </el-input>
+      <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="keyName" v-model="listQuery.keyName">
+      </el-input>
 
+      <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
+    </div>
+
+    <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+
+      <el-table-column prop='id' type='selection' width='45'>
+      </el-table-column>
+
+      <el-table-column min-width="70px" prop='category' label="类别">
+      </el-table-column>
+      <el-table-column prop='keyName' label='键'>
+      </el-table-column>
+      <el-table-column prop='value' label='值'>
+      </el-table-column>
+      <el-table-column prop='sort' label='排序'>
+      </el-table-column>
+      <el-table-column prop='gmtCreate' label='创建时间'>
+      </el-table-column>
+      <el-table-column prop='gmtModify' label='修改时间'>
+      </el-table-column>
+      <el-table-column align="center" label="操作" width="285">
+        <template slot-scope="scope">
+          <el-button
+            size='small'
+            type='default'
+            icon='edit'
+            @click="handleUpdate(scope.row)">编辑
+          </el-button>
+          <el-button
+            size='small'
+            type='danger'
+            icon='setting'
+            @click='handleDelete(scope.row)'>删除
+          </el-button>
+        </template>
+      </el-table-column>
+
+    </el-table>
+
+    <div v-show="!listLoading" class="pagination-container">
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page"
+                     :page-sizes="[20]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
+      </el-pagination>
+    </div>
+
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+      <el-form class="small-space" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
+
+        <el-form-item label="类别">
+          <el-input v-model="temp.category"></el-input>
+        </el-form-item>
+        <el-form-item label="name">
+          <el-input v-model="temp.keyName"></el-input>
+        </el-form-item>
+        <el-form-item label="value">
+          <el-input v-model="temp.value"></el-input>
+        </el-form-item>
+        <el-form-item label="排序">
+          <el-slider v-model='temp.sort'></el-slider>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button v-if="dialogStatus=='create'" type="primary" @click="create">确 定</el-button>
+        <el-button v-else type="primary" @click="update">确 定</el-button>
+      </div>
+    </el-dialog>
+
+  </div>
 </template>
+
 <script>
-  import panel from '@/components/panel.vue'
-  import selectTree from '@/components/selectTree.vue'
-  import treeter from '@/components/treeter'
-  import merge from 'element-ui/src/utils/merge'
+  import waves from '@/directive/waves/index.js'
+  import { addSysDict, fetchSysDictList, updateSysDict, deleteSysDict } from '../../../api/sysadmin'
 
   export default {
-    mixins: [treeter],
-    components: {
-      'imp-panel': panel,
-      'el-select-tree': selectTree
+    name: 'dict',
+    directives: {
+      waves
     },
     data() {
       return {
-        formLabelWidth: '100px',
-        defaultProps: {
-          children: 'children',
-          label: 'name',
-          id: 'id'
+        list: null,
+        total: null,
+        listLoading: true,
+        listQuery: {
+          page: 1,
+          limit: 20,
+          category: '',
+          keyName: ''
         },
-        resourceTree: [],
-        maxId: 700000,
-        form: {
-          id: null,
-          parentId: null,
-          name: '',
-          code: '',
-          type: 1,
-          sort: 0,
-          usable: '1',
-          remarks: ''
-        }
+        temp: {
+          id: '',
+          category: '',
+          keyName: '',
+          value: '',
+          sort: 0
+        },
+        dialogFormVisible: false,
+        dialogStatus: '',
+        textMap: {
+          update: '编辑',
+          create: '创建'
+        },
+        tableKey: 0
       }
     },
-    methods: {
-      newAdd() {
-        this.form = {
-          id: null,
-          parentId: null,
-          name: '',
-          code: '',
-          type: 1,
-          sort: 0,
-          usable: '1',
-          remarks: ''
-        }
-      },
-      /* eslint-disable */
-      renderContent(h, { node, data, store }) {
-        return (
-          <span>
-            <span>
-              <span> {node.label} </span>
-            </span>
-          </span>
-        )
-      },
-      /* eslint-disable */
-
-      deleteSelected() {
-        this.service.get(api.SYS_RESOURCE_DELETE + '?resourceIds=' + this.form.id)
-          .then(res => {
-            this.$message('操作成功')
-            this.deleteFromTree(this.resourceTree, this.form.id)
-            this.newAdd()
-          }).catch(e => {
-            this.$message('操作成功')
-            this.deleteFromTree(this.resourceTree, this.form.id)
-            this.newAdd()
-          })
-      },
-      batchDelete() {
-        var checkKeys = this.$refs.resourceTree.getCheckedKeys()
-        if (checkKeys == null || checkKeys.length <= 0) {
-          this.$message.warning('请选择要删除的资源')
-          return
-        }
-        this.$confirm('确定删除?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.service.get(api.SYS_RESOURCE_DELETE + '?resourceIds=' + checkKeys.join(','))
-            .then(res => {
-              this.$message('操作成功')
-              this.load()
-            }).catch(e => {
-              this.$message('操作成功')
-              console.log(checkKeys)
-              this.batchDeleteFromTree(this.resourceTree, checkKeys)
-            })
-        })
-      },
-      handleNodeClick(data) {
-        this.form = merge({}, data)
-      },
-      onSubmit() {
-        if (this.form.id == null) {
-          this.$http.post(api.SYS_RESOURCE_ADD, this.form)
-            .then(res => {
-              this.$message('操作成功')
-              this.form.id = res.data.id
-              this.appendTreeNode(this.resourceTree, res.data)
-            }).catch(e => {
-              this.maxId += 1
-              this.$message('操作成功')
-              this.form.id = this.maxId
-              var ddd = {
-                id: this.form.id,
-                name: this.form.name,
-                sort: this.form.sort,
-                type: this.form.type,
-                code: this.form.code,
-                remarks: this.form.remarks,
-                parentId: this.form.parentId,
-                usable: this.form.usable,
-                children: []
-              }
-              this.appendTreeNode(this.resourceTree, ddd)
-              this.resourceTree.push({})
-              this.resourceTree.pop()
-            })
-        } else {
-          this.service.post(api.SYS_RESOURCE_UPDATE, this.form)
-            .then(res => {
-              this.$message('操作成功')
-              this.updateTreeNode(this.resourceTree, res.data)
-            }).catch(e => {
-              this.$message('操作成功')
-              this.updateTreeNode(this.resourceTree, merge({}, this.form))
-            })
-        }
-      },
-      load() {
-        getMockData()
-          .then(res => {
-            res.data = res.data.resourceList
-            this.resourceTree = []
-            this.resourceTree.push(...res.data)
-          }).catch((error) => {
-            console.log(error)
-          })
-      }
+    filters: {
     },
     created() {
-      this.load()
+      this.getList()
+    },
+    methods: {
+      getList() {
+        this.listLoading = true
+        const query = 'category=' + this.listQuery.category + '&keyName=' + this.listQuery.keyName +
+                      '&pageSize=' + this.listQuery.limit + '&pageNum=' + this.listQuery.page
+        fetchSysDictList(query)
+          .then(res => {
+            this.list = res.data.result.list
+            this.total = res.data.result.total
+            this.listLoading = false
+          })
+      },
+      handleFilter() {
+        this.listQuery.page = 1
+        this.getList()
+      },
+      handleSizeChange(val) {
+        this.listQuery.limit = val
+        this.getList()
+      },
+      handleCurrentChange(val) {
+        this.listQuery.page = val
+        this.getList()
+      },
+      handleCreate() {
+        this.resetTemp()
+        this.dialogStatus = 'create'
+        this.dialogFormVisible = true
+      },
+      handleUpdate(row) {
+        this.temp = Object.assign({}, row)
+        this.dialogStatus = 'update'
+        this.dialogFormVisible = true
+      },
+      handleDelete(row) {
+        this.listLoading = true
+        deleteSysDict(row.id)
+          .then(res => {
+            if (res.data.code === 200) {
+              this.getList()
+              this.dialogFormVisible = false
+              this.$notify({
+                title: '成功',
+                message: '删除成功',
+                type: 'success',
+                duration: 2000
+              })
+            }
+          })
+      },
+      create() {
+        addSysDict(this.temp)
+          .then(res => {
+            if (res.data.code === 200) {
+              this.getList()
+              this.dialogFormVisible = false
+              this.$notify({
+                title: '成功',
+                message: '创建成功',
+                type: 'success',
+                duration: 2000
+              })
+            }
+          })
+      },
+      update() {
+        updateSysDict(this.temp)
+          .then(res => {
+            if (res.data.code === 200) {
+              this.getList()
+              this.dialogFormVisible = false
+              this.$notify({
+                title: '成功',
+                message: '更新成功',
+                type: 'success',
+                duration: 2000
+              })
+            }
+          })
+      },
+      resetTemp() {
+        this.temp = {
+          id: '',
+          category: '',
+          keyName: '',
+          value: '',
+          sort: 0
+        }
+      }
     }
   }
 </script>
-
-<style>
-  .clearfix:before,
-  .clearfix:after {
-    display: table;
-    content: '';
-  }
-
-  .clearfix:after {
-    clear: both
-  }
-
-</style>

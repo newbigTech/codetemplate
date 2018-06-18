@@ -12,6 +12,8 @@ import org.springframework.util.CollectionUtils;
 import java.util.Date;
 import java.util.List;
 
+import static com.newbig.codetemplate.common.constant.AppConstant.PACKAGE_NAME;
+
 /**
  * User: haibo
  * Date: 2017/10/7 上午11:06
@@ -46,14 +48,16 @@ public class InsertAspect {
     private void domainHandle(Object object, String userId){
 
         try {
-            MethodUtils.invokeMethod(object, "setCreator", userId);
-            MethodUtils.invokeMethod(object, "setModifier", userId);
-            MethodUtils.invokeMethod(object, "setGmtCreate", new Date());
-            MethodUtils.invokeMethod(object, "setGmtModify", new Date());
-            try {
-                MethodUtils.invokeMethod(object, "setIsDeleted", Boolean.FALSE);
-            } catch (Exception e) {
-                MethodUtils.invokeMethod(object, "setIsDeleted", 0);
+            if(object.getClass().getTypeName().startsWith(PACKAGE_NAME)) {
+                MethodUtils.invokeMethod(object, "setCreator", userId);
+                MethodUtils.invokeMethod(object, "setModifier", userId);
+                MethodUtils.invokeMethod(object, "setGmtCreate", new Date());
+                MethodUtils.invokeMethod(object, "setGmtModify", new Date());
+                try {
+                    MethodUtils.invokeMethod(object, "setIsDeleted", Boolean.FALSE);
+                } catch (Exception e) {
+                    MethodUtils.invokeMethod(object, "setIsDeleted", 0);
+                }
             }
         } catch (Exception e) {
             log.error("common fields process error: {}", ExceptionUtils.getStackTrace(e));

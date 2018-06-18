@@ -1,4 +1,4 @@
-package com.newbig.codetemplate.service;
+package com.newbig.codetemplate.service.helper;
 
 import com.google.common.collect.Lists;
 import com.newbig.codetemplate.common.utils.BeanCopyUtil;

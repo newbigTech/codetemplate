@@ -13,6 +13,8 @@ import org.springframework.util.CollectionUtils;
 import java.util.Date;
 import java.util.List;
 
+import static com.newbig.codetemplate.common.constant.AppConstant.PACKAGE_NAME;
+
 @Aspect
 @Component
 @Slf4j
@@ -43,11 +45,12 @@ public class UpdateAspect {
     private void domainHandle(Class<?> cla, Object arg, JoinPoint joinPoint, String userName){
 
         try {
-            MethodUtils.invokeMethod(arg, "setGmtModify", new Date());
-            MethodUtils.invokeMethod(arg, "setModifier", StringUtil.isBlank(userName) ? "unkown" : userName);
+            if(cla.getTypeName().startsWith(PACKAGE_NAME)) {
+                MethodUtils.invokeMethod(arg, "setGmtModify", new Date());
+                MethodUtils.invokeMethod(arg, "setModifier", StringUtil.isBlank(userName) ? "unkown" : userName);
+            }
         } catch (Exception e) {
             log.error("common fields process error: {}", ExceptionUtils.getStackTrace(e));
-
         }
     }
 }

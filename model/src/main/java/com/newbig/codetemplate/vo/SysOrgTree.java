@@ -1,29 +1,36 @@
-package com.newbig.codetemplate.dto;
+package com.newbig.codetemplate.vo;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.List;
+
 /**
  * User: Haibo
- * Date: 2018-06-03 15:50:00
+ * Date: 2018-06-17 15:50:00
  * Desc:
  */
 @Setter
 @Getter
 @ToString
-public class SysOrgUpdateDto {
+public class SysOrgTree {
+
     @ApiModelProperty("id")
-    @NotNull(message = "id不能为空")
     private Integer id;
     @ApiModelProperty("name")
-    @NotEmpty(message = "name 不能为空")
     private String name;
     @ApiModelProperty("parentId")
     private Integer parentId;
-
+    /**
+     * 所有下级组织
+     */
+    private List<SysOrgTree> children = Lists.newArrayList();
+    /**
+     * 所有上级组织
+     */
+    private List<SysOrgTree> parents = Lists.newArrayList();
 }

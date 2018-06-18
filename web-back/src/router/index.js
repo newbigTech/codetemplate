@@ -93,3 +93,258 @@ export const asyncRouterMap2 = [
   },
   { path: '*', redirect: '/404', hidden: true }
 ]
+
+export const goodsRouter = [
+  {
+    path: '/goods',
+    component: Layout,
+    redirect: '/goods/index',
+    name: '商品',
+    icon: 'form',
+    meta: { roles: ['admin'] }, // you can set roles in root nav
+    children: [{
+      path: 'index',
+      component: _import('query/index'),
+      name: 'SPU',
+      meta: {
+        title: 'query',
+        icon: 'form',
+        roles: ['admin'] // or you can only set roles in sub nav
+      }
+    }]
+  },
+  { path: '*', redirect: '/404', hidden: true }
+]
+
+export const wmsRouter = [
+  {
+    path: '/wms',
+    component: Layout,
+    redirect: '/wms/index',
+    name: '库存',
+    icon: 'form',
+    meta: { roles: ['admin'] }, // you can set roles in root nav
+    children: [{
+      path: 'index',
+      component: _import('query/index'),
+      name: '供应商',
+      meta: {
+        title: 'query',
+        icon: 'form',
+        roles: ['admin'] // or you can only set roles in sub nav
+      }
+    }]
+  },
+  { path: '*', redirect: '/404', hidden: true }
+]
+
+export const userRouter = [
+  {
+    path: '/user',
+    component: Layout,
+    redirect: '/user/index',
+    name: '用户',
+    icon: 'form',
+    meta: { roles: ['admin'] }, // you can set roles in root nav
+    children: [{
+      path: 'index',
+      component: _import('query/index'),
+      name: '列表',
+      meta: {
+        title: 'query',
+        icon: 'form',
+        roles: ['admin'] // or you can only set roles in sub nav
+      }
+    }]
+  },
+  { path: '*', redirect: '/404', hidden: true }
+]
+
+export const operateRouter = [
+  {
+    path: '/operate',
+    component: Layout,
+    redirect: '/operate/index',
+    name: '活动',
+    icon: 'form',
+    meta: { roles: ['admin'] }, // you can set roles in root nav
+    children: [{
+      path: 'index',
+      component: _import('query/index'),
+      name: '列表',
+      meta: {
+        title: 'query',
+        icon: 'form',
+        roles: ['admin'] // or you can only set roles in sub nav
+      }
+    }]
+  },
+  { path: '*', redirect: '/404', hidden: true }
+]
+
+export const marketRouter = [
+  {
+    path: '/market',
+    component: Layout,
+    redirect: '/market/index',
+    name: '营销',
+    icon: 'form',
+    meta: { roles: ['admin'] }, // you can set roles in root nav
+    children: [{
+      path: 'index',
+      component: _import('query/index'),
+      name: '列表',
+      meta: {
+        title: 'query',
+        icon: 'form',
+        roles: ['admin'] // or you can only set roles in sub nav
+      }
+    }]
+  },
+  { path: '*', redirect: '/404', hidden: true }
+]
+
+export const cmsRouter = [
+  {
+    path: '/cms',
+    component: Layout,
+    redirect: '/cms/index',
+    name: '内容',
+    icon: 'form',
+    meta: { roles: ['admin'] }, // you can set roles in root nav
+    children: [{
+      path: 'index',
+      component: _import('query/index'),
+      name: '列表',
+      meta: {
+        title: 'query',
+        icon: 'form',
+        roles: ['admin'] // or you can only set roles in sub nav
+      }
+    }]
+  },
+  { path: '*', redirect: '/404', hidden: true }
+]
+
+export const tradeRouter = [
+  {
+    path: '/trade',
+    component: Layout,
+    redirect: '/trade/index',
+    name: '交易',
+    icon: 'form',
+    meta: { roles: ['admin'] }, // you can set roles in root nav
+    children: [{
+      path: 'index',
+      component: _import('query/index'),
+      name: '列表',
+      meta: {
+        title: 'query',
+        icon: 'form',
+        roles: ['admin'] // or you can only set roles in sub nav
+      }
+    }]
+  },
+  { path: '*', redirect: '/404', hidden: true }
+]
+
+export const financeRouter = [
+  {
+    path: '/finance',
+    component: Layout,
+    redirect: '/finance/index',
+    name: '财务',
+    icon: 'form',
+    meta: { roles: ['admin'] }, // you can set roles in root nav
+    children: [{
+      path: 'index',
+      component: _import('query/index'),
+      name: '列表',
+      meta: {
+        title: 'query',
+        icon: 'form',
+        roles: ['admin'] // or you can only set roles in sub nav
+      }
+    }]
+  },
+  { path: '*', redirect: '/404', hidden: true }
+]
+
+export const logisticRouter = [
+  {
+    path: '/logistic',
+    component: Layout,
+    redirect: '/logistic/index',
+    name: '物流',
+    icon: 'form',
+    meta: { roles: ['admin'] }, // you can set roles in root nav
+    children: [{
+      path: 'index',
+      component: _import('query/index'),
+      name: '列表',
+      meta: {
+        title: 'query',
+        icon: 'form',
+        roles: ['admin'] // or you can only set roles in sub nav
+      }
+    }]
+  },
+  { path: '*', redirect: '/404', hidden: true }
+]
+
+export const scheduleRouter = [
+  {
+    path: '/schedule',
+    component: Layout,
+    redirect: '/schedule/index',
+    name: '调度',
+    icon: 'form',
+    meta: { roles: ['admin'] }, // you can set roles in root nav
+    children: [{
+      path: 'index',
+      component: _import('query/index'),
+      name: '列表',
+      meta: {
+        title: 'query',
+        icon: 'form',
+        roles: ['admin'] // or you can only set roles in sub nav
+      }
+    }]
+  },
+  { path: '*', redirect: '/404', hidden: true }
+]
+
+export const systemRouter = [
+  {
+    path: '/system',
+    component: Layout,
+    redirect: '/system/index',
+    name: '系统设置',
+    icon: 'form',
+    meta: { roles: ['admin'] }, // you can set roles in root nav
+    children: [
+      { path: 'account', icon: 'user', spm: '0007.0001.0000.0000', component: _import('sysadmin/account/index'), name: '账户管理 ' },
+      { path: 'role', icon: 'tab', spm: '0007.0003.0000.0000', component: _import('sysadmin/role/index'), name: '角色管理' },
+      { path: 'permission', icon: 'lock', component: _import('sysadmin/permission/index'), name: '权限管理' },
+      { path: 'resource', icon: 'zip', spm: '0007.0004.0000.0000', component: _import('sysadmin/resource/index'), name: '资源管理' },
+      { path: 'org', icon: 'zip', spm: '0007.0004.0000.0000', component: _import('sysadmin/org/index'), name: '组织管理' },
+      { path: 'dict', icon: 'form', spm: '0007.0005.0000.0000', component: _import('sysadmin/dict/index'), name: '数据字典' }
+    ]
+  },
+  { path: '*', redirect: '/404', hidden: true }
+]
+
+export const routeMap = {
+  '0': constantRouterMap,
+  '1': goodsRouter,
+  '2': wmsRouter,
+  '3': userRouter,
+  '4': operateRouter,
+  '5': marketRouter,
+  '6': cmsRouter,
+  '7': tradeRouter,
+  '8': financeRouter,
+  '9': logisticRouter,
+  '10': scheduleRouter,
+  '11': systemRouter
+}

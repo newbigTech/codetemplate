@@ -32,10 +32,12 @@ public class SysUserController {
     @ApiOperation(value = "获取列表")
     @GetMapping(value = "/list")
     public ResponseVo<PageSerializable<SysUser>> getList(
+        @RequestParam(required = false) String name,
+        @RequestParam(required = false) String mobile,
         @RequestParam(required = false,defaultValue = "1") int pageNum,
         @RequestParam(required = false,defaultValue = "20") int pageSize
     ){
-        return ResponseVo.success(sysUserService.getList(pageSize,pageNum));
+        return ResponseVo.success(sysUserService.getList(name,mobile,pageSize,pageNum));
     }
 
     @ApiOperation(value = "获取详情")

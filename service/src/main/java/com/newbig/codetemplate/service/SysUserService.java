@@ -3,6 +3,7 @@ package com.newbig.codetemplate.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageSerializable;
 import com.newbig.codetemplate.common.utils.BeanCopyUtil;
+import com.newbig.codetemplate.common.utils.StringUtil;
 import com.newbig.codetemplate.dal.mapper.SysUserMapper;
 import com.newbig.codetemplate.dal.model.SysUser;
 import com.newbig.codetemplate.dto.SysUserAddDto;
@@ -31,11 +32,17 @@ public class SysUserService {
      * @param pageNum
      * @return
      */
-    public PageSerializable<SysUser> getList(int pageSize, int pageNum) {
+    public PageSerializable<SysUser> getList(String name,String mobile,int pageSize, int pageNum) {
         PageHelper.startPage(pageNum, pageSize);
         Example example = new Example(SysUser.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("isDeleted", 0);
+        if(StringUtil.isNoneBlank(name)){
+            criteria.andLike("name",StringUtil.concat("%",name,"%"));
+        }
+        if(StringUtil.isNoneBlank(mobile)){
+            criteria.andLike("mobile",StringUtil.concat("%",mobile,"%"));
+        }
         List<SysUser> list = sysUserMapper.selectByExample(example);
         return new PageSerializable<>(list);
     }

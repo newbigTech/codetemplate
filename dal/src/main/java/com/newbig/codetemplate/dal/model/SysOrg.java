@@ -1,6 +1,9 @@
 package com.newbig.codetemplate.dal.model;
 
+import com.google.common.collect.Lists;
+
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 
 @Table(name = "sys_org")
@@ -64,7 +67,11 @@ public class SysOrg {
      */
     @Column(name = "parent_ids")
     private String parentIds;
-
+    /**
+     * 所有下级组织
+     */
+    @Transient
+    private List<SysOrg> children = Lists.newArrayList();
     /**
      * @return id
      */
@@ -257,5 +264,13 @@ public class SysOrg {
      */
     public void setParentIds(String parentIds) {
         this.parentIds = parentIds;
+    }
+
+    public List<SysOrg> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<SysOrg> children) {
+        this.children = children;
     }
 }

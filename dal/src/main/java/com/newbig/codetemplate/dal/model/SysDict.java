@@ -1,5 +1,7 @@
 package com.newbig.codetemplate.dal.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -9,16 +11,20 @@ public class SysDict {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String namespace;
+    private String category;
 
-    private String key;
+    @Column(name = "key_name")
+    private String keyName;
 
     private String value;
+    private Integer sort;
 
     @Column(name = "gmt_create")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtCreate;
 
     @Column(name = "gmt_modify")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gmtModify;
 
     private String creator;
@@ -40,34 +46,6 @@ public class SysDict {
      */
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    /**
-     * @return namespace
-     */
-    public String getNamespace() {
-        return namespace;
-    }
-
-    /**
-     * @param namespace
-     */
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
-    }
-
-    /**
-     * @return key
-     */
-    public String getKey() {
-        return key;
-    }
-
-    /**
-     * @param key
-     */
-    public void setKey(String key) {
-        this.key = key;
     }
 
     /**
@@ -152,5 +130,29 @@ public class SysDict {
      */
     public void setIsDeleted(Boolean isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+    public String getKeyName() {
+        return keyName;
+    }
+
+    public void setKeyName(String keyName) {
+        this.keyName = keyName;
     }
 }

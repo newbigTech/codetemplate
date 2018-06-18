@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie'
 
 export const TokenKey = 'AppToken'
+export const Type = 'type'
 
 export function getToken() {
   return Cookies.get(TokenKey)

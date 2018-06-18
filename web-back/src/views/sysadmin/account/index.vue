@@ -113,7 +113,8 @@
 </template>
 
 <script>
-import waves from '@/directive/waves/index.js' // 水波纹指令
+import waves from '@/directive/waves/index.js'
+import { fetchSysUserList } from '../../../api/sysadmin'
 
 const statusOption = [
   { key: '1', display_name: '禁用' },
@@ -187,14 +188,14 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      // fetch(api.SYS_ACCOUNT_LIST + '?name=' + this.listQuery.name + '&mobile=' + this.listQuery.mobile +
-      //   '&status=' + this.listQuery.status + '&pageSize=' +
-      //   this.listQuery.limit + '&pageNum=' + this.listQuery.page)
-      //   .then(res => {
-      //     this.list = res.data.result.list
-      //     this.total = res.data.result.total
-      //     this.listLoading = false
-      //   })
+      const query = 'name=' + this.listQuery.name + '&mobile=' + this.listQuery.mobile +
+        '&status=' + this.listQuery.status + '&pageSize=' + this.listQuery.limit + '&pageNum=' + this.listQuery.page
+      fetchSysUserList(query)
+        .then(res => {
+          this.list = res.data.result.list
+          this.total = res.data.result.total
+          this.listLoading = false
+        })
     },
     handleFilter() {
       this.listQuery.page = 1

@@ -2,6 +2,7 @@ package com.newbig.codetemplate.app.config;
 
 import com.newbig.codetemplate.common.serializer.FastJsonJsonRedisSerializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
@@ -31,9 +32,11 @@ public class RedisConfig {
 
         template.setConnectionFactory(redisConnectionFactory);
         template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(getFastJsonJsonRedisSerializer());
+        template.setValueSerializer(new StringRedisSerializer());
+//        template.setValueSerializer(getFastJsonJsonRedisSerializer());
         template.setHashKeySerializer(new StringRedisSerializer());
-        template.setHashValueSerializer(getFastJsonJsonRedisSerializer());
+        template.setHashValueSerializer(new StringRedisSerializer());
+//        template.setHashValueSerializer(getFastJsonJsonRedisSerializer());
         template.afterPropertiesSet();
 
         return template;

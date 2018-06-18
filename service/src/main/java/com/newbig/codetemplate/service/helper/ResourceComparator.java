@@ -1,4 +1,4 @@
-package com.newbig.codetemplate.service;
+package com.newbig.codetemplate.service.helper;
 
 
 import com.newbig.codetemplate.vo.ResourceTreeVo;

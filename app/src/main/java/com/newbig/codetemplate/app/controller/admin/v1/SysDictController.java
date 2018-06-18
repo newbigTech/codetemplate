@@ -32,10 +32,12 @@ public class SysDictController {
     @ApiOperation(value = "获取列表")
     @GetMapping(value = "/list")
     public ResponseVo<PageSerializable<SysDict>> getList(
+        @RequestParam(required = false) String category,
+        @RequestParam(required = false) String keyName,
         @RequestParam(required = false,defaultValue = "1") int pageNum,
         @RequestParam(required = false,defaultValue = "20") int pageSize
     ){
-        return ResponseVo.success(sysDictService.getList(pageSize,pageNum));
+        return ResponseVo.success(sysDictService.getList(category,keyName,pageSize,pageNum));
     }
 
     @ApiOperation(value = "获取详情")

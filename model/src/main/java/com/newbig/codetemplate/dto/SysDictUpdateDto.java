@@ -20,21 +20,13 @@ public class SysDictUpdateDto {
     @ApiModelProperty("id")
     @NotNull(message = "id不能为空")
     private Integer id;
-    @ApiModelProperty("namespace")
-    private String namespace;
-    @ApiModelProperty("key")
-    private String key;
+    @ApiModelProperty("category")
+    private String category;
+    @ApiModelProperty("keyName")
+    private String keyName;
     @ApiModelProperty("value")
     private String value;
-    @ApiModelProperty("gmtCreate")
-    private Date gmtCreate;
-    @ApiModelProperty("gmtModify")
-    private Date gmtModify;
-    @ApiModelProperty("creator")
-    private String creator;
-    @ApiModelProperty("modifier")
-    private String modifier;
-    @ApiModelProperty("isDeleted")
-    private Boolean isDeleted;
+    @ApiModelProperty("sort")
+    private Integer sort;
 
 }

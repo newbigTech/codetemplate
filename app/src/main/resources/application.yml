@@ -1,6 +1,13 @@
 server:
   port: 8888
 
+logging:
+  level:
+    com:
+      newbig:
+        codetemplate:
+          dal:
+            mapper: debug
 spring:
   profiles: dev
   endpoints:
@@ -21,7 +28,7 @@ spring:
       enabled: false
   redis:
     host: 127.0.0.1
-    port: 6379
+    port: 9221
     password:
   aop:
     auto: true

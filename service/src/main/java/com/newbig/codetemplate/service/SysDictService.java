@@ -3,6 +3,7 @@ package com.newbig.codetemplate.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageSerializable;
 import com.newbig.codetemplate.common.utils.BeanCopyUtil;
+import com.newbig.codetemplate.common.utils.StringUtil;
 import com.newbig.codetemplate.dal.mapper.SysDictMapper;
 import com.newbig.codetemplate.dal.model.SysDict;
 import com.newbig.codetemplate.dto.SysDictAddDto;
@@ -31,11 +32,18 @@ public class SysDictService {
      * @param pageNum
      * @return
      */
-    public PageSerializable<SysDict> getList(int pageSize, int pageNum) {
+    public PageSerializable<SysDict> getList(String category,String keyName,int pageSize, int pageNum) {
         PageHelper.startPage(pageNum, pageSize);
         Example example = new Example(SysDict.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("isDeleted", 0);
+        if(StringUtil.isNoneBlank(category)){
+            criteria.andLike("category",StringUtil.concat("%",category,"%"));
+        }
+        if(StringUtil.isNoneBlank(keyName)){
+            criteria.andLike("keyName",StringUtil.concat("%",keyName,"%"));
+        }
+        example.setOrderByClause("category DESC,sort ASC");
         List<SysDict> list = sysDictMapper.selectByExample(example);
         return new PageSerializable<>(list);
     }
@@ -70,12 +78,8 @@ public class SysDictService {
     public void updateSysDict(SysDictUpdateDto sysDictUpdateDto) {
         SysDict sysDict = new SysDict();
         BeanCopyUtil.copyProperties(sysDictUpdateDto, sysDict);
-
-        Example example = new Example(SysDict.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("isDeleted", 0);
-        criteria.andEqualTo("id", sysDictUpdateDto.getId());
-        sysDictMapper.updateByExample(sysDict, example);
+        sysDict.setIsDeleted(null);
+        sysDictMapper.updateByPrimaryKeySelective(sysDict);
     }
 
     /**

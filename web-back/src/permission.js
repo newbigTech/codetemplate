@@ -2,7 +2,8 @@ import router from './router'
 import store from './store'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css'// progress bar style
-import { getToken } from '@/utils/auth' // 验权
+import { getToken } from '@/utils/auth'
+import { Type } from './utils/auth'
 
 NProgress.configure({ showSpinner: false })// NProgress Configuration
 // permissiom judge
@@ -21,9 +22,8 @@ router.beforeEach((to, from, next) => {
     } else {
       if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user_info信息
         store.dispatch('GetUserInfo').then(res => { // 拉取user_info
-          // const roles = res.data.role
-          // console.log()
-          store.dispatch('GenerateRoutes', { type: 1 }).then(() => { // 生成可访问的路由表
+          const type = localStorage.getItem(Type)
+          store.dispatch('GenerateRoutes', { type: type === null ? '1' : type }).then(() => { // 生成可访问的路由表
             router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
             next({ ...to }) // hack方法 确保addRoutes已完成
           })

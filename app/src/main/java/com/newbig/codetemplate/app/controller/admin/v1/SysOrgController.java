@@ -1,6 +1,7 @@
 package com.newbig.codetemplate.app.controller.admin.v1;
 
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.PageSerializable;
 import com.newbig.codetemplate.common.constant.AppConstant;
 import com.newbig.codetemplate.dal.model.SysOrg;
 import com.newbig.codetemplate.service.SysOrgService;
@@ -8,6 +9,7 @@ import com.newbig.codetemplate.vo.ResponseVo;
 import com.newbig.codetemplate.dto.SysOrgAddDto;
 import com.newbig.codetemplate.dto.SysOrgUpdateDto;
 import com.newbig.codetemplate.dto.SysOrgDeleteDto;
+import com.newbig.codetemplate.vo.SysOrgTree;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +33,7 @@ public class SysOrgController {
 
     @ApiOperation(value = "获取列表")
     @GetMapping(value = "/list")
-    public ResponseVo<PageInfo<SysOrg>> getList(
+    public ResponseVo<PageSerializable<SysOrg>> getList(
         @RequestParam(required = false,defaultValue = "1") int pageNum,
         @RequestParam(required = false,defaultValue = "20") int pageSize
     ){
