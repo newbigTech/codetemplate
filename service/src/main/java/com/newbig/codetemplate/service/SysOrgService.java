@@ -74,9 +74,24 @@ public class SysOrgService {
     */
     public void addSysOrg(SysOrgAddDto sysOrgAddDto){
         SysOrg sysOrg = new SysOrg();
-        sysOrg.setName(sysOrgAddDto.getName());
-        if(null != sysOrgAddDto.getParentId()){
-            SysOrg parentOrg = getDetailById(sysOrgAddDto.getParentId());
+        buildSysOrg(sysOrg,sysOrgAddDto.getParentId(),sysOrgAddDto.getName());
+        sysOrgMapper.insertSelective(sysOrg);
+    }
+    /**
+    * 更新
+    * @param sysOrgUpdateDto
+    */
+    public void updateSysOrg(SysOrgUpdateDto sysOrgUpdateDto){
+        SysOrg sysOrg = new SysOrg();
+        sysOrg.setId(sysOrgUpdateDto.getId());
+        buildSysOrg(sysOrg,sysOrgUpdateDto.getParentId(),sysOrgUpdateDto.getName());
+        sysOrgMapper.updateByPrimaryKeySelective(sysOrg);
+    }
+
+    private void buildSysOrg(SysOrg sysOrg,Integer parentId,String name){
+        sysOrg.setName(name);
+        if(null != parentId){
+            SysOrg parentOrg = getDetailById(parentId);
             if(null == parentOrg){
                 throw new UserRemindException("父节点不存在");
             }
@@ -90,29 +105,7 @@ public class SysOrgService {
             sysOrg.setParentIds("1,");
             sysOrg.setLevel(1);
         }
-        sysOrgMapper.insertSelective(sysOrg);
     }
-    /**
-    * 更新
-    * @param sysOrgUpdateDto
-    */
-    public void updateSysOrg(SysOrgUpdateDto sysOrgUpdateDto){
-        SysOrg sysOrg = new SysOrg();
-        sysOrg.setId(sysOrgUpdateDto.getId());
-        sysOrg.setName(sysOrgUpdateDto.getName());
-        if(null != sysOrgUpdateDto.getParentId()){
-            SysOrg parentOrg = getDetailById(sysOrgUpdateDto.getParentId());
-            if(null == parentOrg){
-                throw new UserRemindException("父节点不存在");
-            }
-            sysOrg.setParentId(parentOrg.getId());
-            sysOrg.setAncesstorId(parentOrg.getAncesstorId());
-            sysOrg.setParentIds(StringUtil.concat(parentOrg.getLevel() == 0?"":parentOrg.getParentIds(),parentOrg.getId(),","));
-            sysOrg.setLevel(parentOrg.getLevel()+1);
-        }
-        sysOrgMapper.updateByPrimaryKeySelective(sysOrg);
-    }
-
     /**
     * 逻辑删除
     * @param id

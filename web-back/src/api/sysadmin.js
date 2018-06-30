@@ -64,3 +64,39 @@ export function updateSysOrg(data) {
     data: data
   })
 }
+export function deleteSysOrg(data) {
+  return request({
+    url: '/api/v1/sysOrg/delete',
+    method: 'post',
+    data: data
+  })
+}
+
+export function getResourceTree(query) {
+  return request({
+    url: '/api/v1/sysResource/list',
+    method: 'get',
+    params: query
+  })
+}
+export function addSysResource(data) {
+  return request({
+    url: '/api/v1/sysResource/add',
+    method: 'post',
+    data: data
+  })
+}
+export function updateSysResource(data) {
+  return request({
+    url: '/api/v1/sysResource/update',
+    method: 'post',
+    data: data
+  })
+}
+export function deleteSysResource(data) {
+  return request({
+    url: '/api/v1/sysResource/delete',
+    method: 'post',
+    data: data
+  })
+}

@@ -10,26 +10,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class ResourceHelper {
-    public static List<ResourceTreeVo> buildResourceTreeVo(List<SysResource> resources) {
-        List<ResourceTreeVo> rootTrees = Lists.newArrayList();
-        List<ResourceTreeVo> resourceTreeVos = Lists.newArrayList();
+    public static List<SysResource> buildResourceTreeVo(List<SysResource> resources) {
+        List<SysResource> rootTrees = Lists.newArrayList();
         for (SysResource resource : resources) {
-            ResourceTreeVo resourceTreeVo = new ResourceTreeVo();
-            BeanCopyUtil.copyProperties(resource, resourceTreeVo);
-            resourceTreeVo.setChildren(Lists.newArrayList());
-            resourceTreeVos.add(resourceTreeVo);
-            if (0 == resourceTreeVo.getParentId()) {
-                resourceTreeVo.setParentId(null);
+            if (resource.getAncesstorId()==0 && resource.getLevel()==0) {
+                rootTrees.add(resource);
             }
-        }
-        for (ResourceTreeVo resourceTreeVo : resourceTreeVos) {
-            if (Objects.equals(1, resourceTreeVo.getLevel())) {
-                rootTrees.add(resourceTreeVo);
-            }
-            for (ResourceTreeVo r : resourceTreeVos) {
-                if (Objects.equals(r.getParentId(), resourceTreeVo.getId())) {
-                    resourceTreeVo.getChildren().add(r);
-                    Collections.sort(resourceTreeVo.getChildren(), new ResourceComparator());
+            for (SysResource t : resources) {
+                if (t.getParentId().equals(resource.getId())) {
+                    resource.getChildren().add(t);
                 }
             }
         }

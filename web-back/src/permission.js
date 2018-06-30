@@ -24,7 +24,7 @@ router.beforeEach((to, from, next) => {
         store.dispatch('GetUserInfo').then(res => { // 拉取user_info
           const type = localStorage.getItem(Type)
           store.dispatch('GenerateRoutes', { type: type === null ? '1' : type }).then(() => { // 生成可访问的路由表
-            router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+            // router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
             next({ ...to }) // hack方法 确保addRoutes已完成
           })
         }).catch(() => {

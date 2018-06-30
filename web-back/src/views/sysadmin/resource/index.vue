@@ -32,7 +32,7 @@
                 <el-input v-model='form.name' auto-complete='off'></el-input>
               </el-form-item>
               <el-form-item label='Path' :label-width='formLabelWidth'>
-                <el-input v-model='form.path' auto-complete='off'></el-input>
+                <el-input v-model='form.uri' auto-complete='off'></el-input>
               </el-form-item>
               <el-form-item label='SPM' :label-width='formLabelWidth'>
                 <el-input v-model='form.spm' auto-complete='off'></el-input>
@@ -71,7 +71,8 @@
   import panel from '@/components/panel.vue'
   import selectTree from '@/components/selectTree.vue'
   import treeter from '@/components/treeter'
-  import fetchList from '@/api/resource.js'
+  import { getResourceTree, addSysResource, updateSysResource, deleteSysResource } from '../../../api/sysadmin'
+
   export default {
     mixins: [treeter],
     components: {
@@ -126,44 +127,18 @@
       deleteSelected() {
         const id = new Array(1);
         id[0] = this.form.id;
-        fetch({
-          url: api.SYS_RESOURCE_DELETE,
-          method: 'POST',
-          data: {
-            ids: id
-          }
-        }).then(res => {
+        deleteSysResource(this.form)
+          .then(res => {
           if (res.data.code === 200) {
-            this.$message('删除成功')
-            this.deleteFromTree(this.resourceTree, this.form.id)
+            this.getResourceTree()
+            this.$notify({
+              title: '成功',
+              message: '添加成功',
+              type: 'success',
+              duration: 2000
+            })
           }
         }).catch(e => {
-        })
-      },
-      batchDelete() {
-        var checkKeys = this.$refs.resourceTree.getCheckedKeys()
-        if (checkKeys == null || checkKeys.length <= 0) {
-          this.$message.warning('请选择要删除的资源')
-          return
-        }
-        this.$confirm('确定删除?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          fetch({
-            url: api.SYS_RESOURCE_DELETE,
-            method: 'POST',
-            data: {
-              ids: checkKeys
-            }
-          }).then(res => {
-            if (res.data.code === 200) {
-              this.$message('删除成功')
-              this.load()
-            }
-          }).catch(e => {
-          })
         })
       },
       handleNodeClick(data) {
@@ -171,37 +146,40 @@
       },
       onSubmit() {
         if (this.form.id == null) {
-          fetch({
-              url: api.SYS_RESOURCE_ADD,
-              method: 'POST',
-              data: this.form
-            }).then(res => {
-              if (res.data.code === 200) {
-                this.$message('添加成功')
-                this.form.id = res.data.id
-                this.appendTreeNode(this.resourceTree, res.data.result)
-              }
+         addSysResource(this.form)
+           .then(res => {
+             if (res.data.code === 200) {
+               this.getResourceTree()
+               this.$notify({
+                 title: '成功',
+                 message: '添加成功',
+                 type: 'success',
+                 duration: 2000
+               })
+             }
             }).catch(e => {
             })
         } else {
-          fetch({
-            url: api.SYS_RESOURCE_UPDATE,
-            method: 'POST',
-            data: this.form
-          }).then(res => {
+          updateSysResource(this.form)
+            .then(res => {
             if (res.data.code === 200) {
-              this.$message('更新成功')
-              this.updateTreeNode(this.resourceTree, res.data)
+              this.getResourceTree()
+              this.$notify({
+                title: '成功',
+                message: '添加成功',
+                type: 'success',
+                duration: 2000
+              })
             }
           }).catch(e => {
           })
         }
       },
       getResourceTree() {
-        fetchList()
+        getResourceTree()
           .then(res => {
             this.resourceTree = []
-            // this.resourceTree.push(...res.data.result)
+            this.resourceTree.push(...res.data.result.list)
           })
       }
     },

@@ -47,12 +47,6 @@ export const constantRouterMap = [
   }
 ]
 
-export default new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
-})
-
 export const asyncRouterMap = [
   {
     spm: '0007.0000.0000.0000',
@@ -348,3 +342,20 @@ export const routeMap = {
   '10': scheduleRouter,
   '11': systemRouter
 }
+export default new Router({
+  // mode: 'history', // require service support
+  scrollBehavior: () => ({ y: 0 }),
+  routes: [...constantRouterMap,
+    ...goodsRouter,
+    ...wmsRouter,
+    ...userRouter,
+    ...operateRouter,
+    ...marketRouter,
+    ...cmsRouter,
+    ...tradeRouter,
+    ...financeRouter,
+    ...logisticRouter,
+    ...scheduleRouter,
+    ...systemRouter
+  ]
+})

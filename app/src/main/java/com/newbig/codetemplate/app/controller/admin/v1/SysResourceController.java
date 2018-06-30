@@ -41,7 +41,7 @@ public class SysResourceController {
     @ApiOperation(value = "获取详情")
     @GetMapping(value = "/get")
     public ResponseVo<SysResource> getDetail(
-        @RequestParam(required = false) Integer id ){
+        @RequestParam(required = false) Long id ){
         return ResponseVo.success(sysResourceService.getDetailById(id));
     }
 

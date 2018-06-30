@@ -97,7 +97,7 @@ export default {
     handleSelect(key, keyPath) {
       // 重新生成路由
       store.dispatch('GenerateRoutes', { type: key }).then(() => { // 生成可访问的路由表
-        router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+        // router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
       })
       router.push({ path: '/dashboard' })
     },

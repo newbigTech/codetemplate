@@ -1,7 +1,10 @@
 package com.newbig.codetemplate.dal.model;
 
+import com.google.common.collect.Lists;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "sys_resource")
 public class SysResource {
@@ -28,7 +31,10 @@ public class SysResource {
      * 菜单级别
      */
     private Integer level;
-
+    /**
+     * 排序
+     */
+    private Integer sort;
     /**
      * 根节点id
      */
@@ -63,7 +69,8 @@ public class SysResource {
      * 菜单对应的后端接口
      */
     private String apis;
-
+    @Transient
+    private List<SysResource> children = Lists.newArrayList();
     /**
      * @return id
      */
@@ -290,5 +297,21 @@ public class SysResource {
      */
     public void setApis(String apis) {
         this.apis = apis;
+    }
+
+    public List<SysResource> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<SysResource> children) {
+        this.children = children;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
     }
 }
