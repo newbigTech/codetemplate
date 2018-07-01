@@ -2,11 +2,12 @@ package ${basePackage}.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageSerializable;
+import ${basePackage}.dal.mapper.${modelNameUpperCamel}Mapper;
+import ${basePackage}.dal.model.${modelNameUpperCamel};
 import ${basePackage}.dto.${modelNameUpperCamel}AddDto;
 import ${basePackage}.dto.${modelNameUpperCamel}UpdateDto;
 import ${basePackage}.dto.${modelNameUpperCamel}DeleteDto;
 import ${basePackage}.common.utils.BeanCopyUtil;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -44,7 +45,7 @@ public class ${modelNameUpperCamel}Service {
     * @param id
     * @return
     */
-    public ${modelNameUpperCamel} getDetailById(Integer id){
+    public ${modelNameUpperCamel} getDetailById(Long id){
         Example example = new Example(${modelNameUpperCamel}.class);
         return ${modelNameLowerCamel}Mapper.selectByPrimaryKey(id);
     }
@@ -77,7 +78,7 @@ public class ${modelNameUpperCamel}Service {
     * 逻辑删除
     * @param id
     */
-    public void delete${modelNameUpperCamel}(Integer id){
+    public void delete${modelNameUpperCamel}(Long id){
         ${modelNameUpperCamel} ${modelNameLowerCamel} = new ${modelNameUpperCamel}();
         ${modelNameLowerCamel}.setIsDeleted(true);
         ${modelNameLowerCamel}.setId(id);

@@ -32,18 +32,26 @@ public class SysOrgController {
     private SysOrgService sysOrgService;
 
     @ApiOperation(value = "获取列表")
-    @GetMapping(value = "/list")
-    public ResponseVo<PageSerializable<SysOrg>> getList(
+    @GetMapping(value = "/tree")
+    public ResponseVo<PageSerializable<SysOrg>> getTree(
         @RequestParam(required = false,defaultValue = "1") int pageNum,
         @RequestParam(required = false,defaultValue = "20") int pageSize
     ){
-        return ResponseVo.success(sysOrgService.getList(pageSize,pageNum));
+        return ResponseVo.success(sysOrgService.getTree(pageSize,pageNum));
     }
-
+    @ApiOperation(value = "获取列表")
+    @GetMapping(value = "/list")
+    public ResponseVo<PageSerializable<SysOrg>> getList(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false,defaultValue = "1") int pageNum,
+            @RequestParam(required = false,defaultValue = "20") int pageSize
+    ){
+        return ResponseVo.success(sysOrgService.getList(name,pageSize,pageNum));
+    }
     @ApiOperation(value = "获取详情")
     @GetMapping(value = "/get")
     public ResponseVo<SysOrg> getDetail(
-        @RequestParam(required = false) Integer id ){
+        @RequestParam(required = false) Long id ){
         return ResponseVo.success(sysOrgService.getDetailById(id));
     }
 

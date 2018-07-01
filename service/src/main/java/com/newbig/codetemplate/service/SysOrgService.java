@@ -2,6 +2,7 @@ package com.newbig.codetemplate.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageSerializable;
+import com.google.common.collect.Lists;
 import com.newbig.codetemplate.common.exception.UserRemindException;
 import com.newbig.codetemplate.common.utils.StringUtil;
 import com.newbig.codetemplate.dal.mapper.SysOrgMapper;
@@ -37,7 +38,7 @@ public class SysOrgService {
      * @param pageNum
      * @return
      */
-    public PageSerializable<SysOrg> getList(int pageSize, int pageNum){
+    public PageSerializable<SysOrg> getTree(int pageSize, int pageNum){
         PageHelper.startPage(pageNum,pageSize);
         Example example = new Example(SysOrg.class);
         example.createCriteria()
@@ -48,7 +49,7 @@ public class SysOrgService {
         if(CollectionUtils.isEmpty(list)){
             return ps;
         }
-        List<Integer> orgIds = list.stream().map(SysOrg::getId).collect(Collectors.toList());
+        List<Long> orgIds = list.stream().map(SysOrg::getId).collect(Collectors.toList());
         example.clear();
         example.createCriteria()
                 .andEqualTo("isDeleted",0)
@@ -58,13 +59,31 @@ public class SysOrgService {
         ps.setList(orgTrees);
         return ps;
     }
+    /**
+     * 分页获取 sysOrg 列表
+     * @param pageSize
+     * @param pageNum
+     * @return
+     */
+    public PageSerializable<SysOrg> getList(String name,int pageSize, int pageNum){
+        PageHelper.startPage(pageNum,pageSize);
+        Example example = new Example(SysOrg.class);
+        Example.Criteria criteria =example.createCriteria();
+        criteria.andEqualTo("isDeleted",0);
+        if(StringUtil.isNotBlank(name)){
+            criteria.andLike("name",StringUtil.concat("%",name,"%"));
+        }
+        example.setOrderByClause("level ASC");
+        List<SysOrg> list = sysOrgMapper.selectByExample(example);
+        return new PageSerializable<>(list);
+    }
 
     /**
     *获取详情
     * @param id
     * @return
     */
-    public SysOrg getDetailById(Integer id){
+    public SysOrg getDetailById(Long id){
         return sysOrgMapper.selectByPrimaryKey(id);
     }
 
@@ -88,7 +107,7 @@ public class SysOrgService {
         sysOrgMapper.updateByPrimaryKeySelective(sysOrg);
     }
 
-    private void buildSysOrg(SysOrg sysOrg,Integer parentId,String name){
+    private void buildSysOrg(SysOrg sysOrg,Long parentId,String name){
         sysOrg.setName(name);
         if(null != parentId){
             SysOrg parentOrg = getDetailById(parentId);
@@ -100,7 +119,7 @@ public class SysOrgService {
             sysOrg.setParentIds(StringUtil.concat(parentOrg.getLevel() == 0?"":parentOrg.getParentIds(),parentOrg.getId(),","));
             sysOrg.setLevel(parentOrg.getLevel()+1);
         }else{
-            sysOrg.setParentId(1);
+            sysOrg.setParentId(1L);
             sysOrg.setAncesstorId(1);
             sysOrg.setParentIds("1,");
             sysOrg.setLevel(1);
@@ -110,10 +129,26 @@ public class SysOrgService {
     * 逻辑删除
     * @param id
     */
-    public void deleteSysOrg(Integer id){
+    public void deleteSysOrg(Long id){
         SysOrg sysOrg = new SysOrg();
         sysOrg.setIsDeleted(true);
         sysOrg.setId(id);
         sysOrgMapper.updateByPrimaryKeySelective(sysOrg);
+    }
+
+    /**
+     * 根据主键id查询
+     * @param orgIds
+     * @return
+     */
+    public List<SysOrg> getListByOrgIds(List<Long> orgIds) {
+        if(CollectionUtils.isEmpty(orgIds)){
+            return Lists.newArrayList();
+        }
+        Example example = new Example(SysOrg.class);
+        example.createCriteria()
+                .andEqualTo("isDeleted",0)
+                .andIn("id",orgIds);
+        return sysOrgMapper.selectByExample(example);
     }
 }

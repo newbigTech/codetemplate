@@ -17,6 +17,6 @@ import lombok.ToString;
 public class SysOrgDeleteDto {
     @ApiModelProperty("id")
     @NotNull(message = "id不能为空")
-    private Integer id;
+    private Long id;
 
 }

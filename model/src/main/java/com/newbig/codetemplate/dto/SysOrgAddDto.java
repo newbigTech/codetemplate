@@ -21,6 +21,6 @@ public class SysOrgAddDto {
     @NotEmpty(message = "name不能为空")
     private String name;
     @ApiModelProperty("parentId")
-    private Integer parentId;
+    private Long parentId;
 
 }

@@ -12,7 +12,7 @@ public class CodeGeneratorMain {
 
 	public static void main(String[] args) {
 		List<String> tables = Lists.newArrayList(
-				"sys_org");
+				"sys_role");
 		CodeGeneratorManager cgm = new CodeGeneratorManager();
 		cgm.genCodeByTableName(tables);
 

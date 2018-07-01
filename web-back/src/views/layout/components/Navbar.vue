@@ -8,15 +8,16 @@
       <el-menu-item style="display: inline-block;" index="0">首页</el-menu-item>
       <el-menu-item style="display: inline-block;" index="1">商品中心</el-menu-item>
       <el-menu-item style="display: inline-block;" index="2">库存中心</el-menu-item>
-      <el-menu-item style="display: inline-block;" index="3">用户中心</el-menu-item>
-      <el-menu-item style="display: inline-block;" index="4">运营中心</el-menu-item>
-      <el-menu-item style="display: inline-block;" index="5">营销中心</el-menu-item>
-      <el-menu-item style="display: inline-block;" index="6">内容中心</el-menu-item>
-      <el-menu-item style="display: inline-block;" index="7">交易中心</el-menu-item>
-      <el-menu-item style="display: inline-block;" index="8">财务中心</el-menu-item>
-      <el-menu-item style="display: inline-block;" index="9">物流中心</el-menu-item>
-      <el-menu-item style="display: inline-block;" index="10">任务调度</el-menu-item>
-      <el-menu-item style="display: inline-block;" index="11">系统设置</el-menu-item>
+      <el-menu-item style="display: inline-block;" index="3">商家中心</el-menu-item>
+      <el-menu-item style="display: inline-block;" index="4">用户中心</el-menu-item>
+      <el-menu-item style="display: inline-block;" index="5">运营中心</el-menu-item>
+      <el-menu-item style="display: inline-block;" index="6">营销中心</el-menu-item>
+      <el-menu-item style="display: inline-block;" index="7">内容中心</el-menu-item>
+      <el-menu-item style="display: inline-block;" index="8">交易中心</el-menu-item>
+      <el-menu-item style="display: inline-block;" index="9">财务中心</el-menu-item>
+      <el-menu-item style="display: inline-block;" index="10">物流中心</el-menu-item>
+      <el-menu-item style="display: inline-block;" index="11">任务调度</el-menu-item>
+      <el-menu-item style="display: inline-block;" index="12">系统设置</el-menu-item>
     </el-menu>
     <div class="right-menu">
       <!--<error-log class="errLog-container right-menu-item"></error-log>-->

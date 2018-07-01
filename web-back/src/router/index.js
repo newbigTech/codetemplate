@@ -90,26 +90,52 @@ export const asyncRouterMap2 = [
 
 export const goodsRouter = [
   {
-    path: '/goods',
-    component: Layout,
-    redirect: '/goods/index',
-    name: '商品',
-    icon: 'form',
-    meta: { roles: ['admin'] }, // you can set roles in root nav
-    children: [{
-      path: 'index',
-      component: _import('query/index'),
-      name: 'SPU',
-      meta: {
-        title: 'query',
-        icon: 'form',
-        roles: ['admin'] // or you can only set roles in sub nav
-      }
-    }]
+    path: '/goods', component: Layout, redirect: '/goods/index', icon: 'form', noDropdown: true,
+    children: [{ path: 'search', component: _import('query/index'), name: '商品管理' }]
+  },
+  {
+    path: '/goods', component: Layout, redirect: '/goods/brand', icon: 'form', noDropdown: true,
+    children: [{ path: 'brand', component: _import('query/index'), name: '品牌管理' }]
+  },
+  {
+    path: '/goods', component: Layout, redirect: '/goods/spec', icon: 'form', noDropdown: true,
+    children: [{ path: 'spec', component: _import('query/index'), name: '规格管理' }]
+  },
+  {
+    path: '/goods', component: Layout, redirect: '/goods/attribute', icon: 'form', noDropdown: true,
+    children: [{ path: 'attribute', component: _import('query/index'), name: '属性管理' }]
+  },
+  {
+    path: '/goods', component: Layout, redirect: '/goods/tag', icon: 'form', noDropdown: true,
+    children: [{ path: 'tag', component: _import('query/index'), name: '标签管理' }]
+  },
+  {
+    path: '/goods', component: Layout, redirect: '/goods/spu', icon: 'form', noDropdown: true,
+    children: [{ path: 'spu', component: _import('query/index'), name: 'SPU管理' }]
+  },
+  {
+    path: '/goods', component: Layout, redirect: '/goods/search', icon: 'form', noDropdown: false, name: '搜索管理',
+    children: [
+      { path: 'search', component: _import('query/index'), name: '搜索' },
+      { path: 'data-sync', component: _import('query/index'), name: '数据同步' },
+      { path: 'participle-thesaurus', component: _import('query/index'), name: '分词词库' },
+      { path: 'synonymous-thesaurus', component: _import('query/index'), name: '同义词库' },
+      { path: 'classification-weight', component: _import('query/index'), name: '分类权重' },
+      { path: 'goods-weight', component: _import('query/index'), name: '商品权重' }
+    ]
+  }
+]
+export const shopRouter = [
+  {
+    path: '/shop', component: Layout, redirect: '/shop/invest', icon: 'form', noDropdown: true,
+    children: [{ path: 'invest', component: _import('query/index'), name: '招商审核' }]
+  },
+  {
+    path: '/shop', component: Layout, redirect: '/shop/index', icon: 'form', noDropdown: true,
+    children: [{ path: 'index', component: _import('query/index'), name: '店铺' }]
   },
   { path: '*', redirect: '/404', hidden: true }
 ]
-
 export const wmsRouter = [
   {
     path: '/wms',
@@ -134,22 +160,12 @@ export const wmsRouter = [
 
 export const userRouter = [
   {
-    path: '/user',
-    component: Layout,
-    redirect: '/user/index',
-    name: '用户',
-    icon: 'form',
-    meta: { roles: ['admin'] }, // you can set roles in root nav
-    children: [{
-      path: 'index',
-      component: _import('query/index'),
-      name: '列表',
-      meta: {
-        title: 'query',
-        icon: 'form',
-        roles: ['admin'] // or you can only set roles in sub nav
-      }
-    }]
+    path: '/user', component: Layout, redirect: '/user/index', icon: 'form', noDropdown: true,
+    children: [{ path: 'index', component: _import('query/index'), name: '用户列表' }]
+  },
+  {
+    path: '/user', component: Layout, redirect: '/user/stat', icon: 'form', noDropdown: true,
+    children: [{ path: 'stat', component: _import('query/index'), name: '用户统计' }]
   },
   { path: '*', redirect: '/404', hidden: true }
 ]
@@ -319,7 +335,7 @@ export const systemRouter = [
     children: [
       { path: 'account', icon: 'user', spm: '0007.0001.0000.0000', component: _import('sysadmin/account/index'), name: '账户管理 ' },
       { path: 'role', icon: 'tab', spm: '0007.0003.0000.0000', component: _import('sysadmin/role/index'), name: '角色管理' },
-      { path: 'permission', icon: 'lock', component: _import('sysadmin/permission/index'), name: '权限管理' },
+      // { path: 'permission', icon: 'lock', component: _import('sysadmin/permission/index'), name: '权限管理' },
       { path: 'resource', icon: 'zip', spm: '0007.0004.0000.0000', component: _import('sysadmin/resource/index'), name: '资源管理' },
       { path: 'org', icon: 'zip', spm: '0007.0004.0000.0000', component: _import('sysadmin/org/index'), name: '组织管理' },
       { path: 'dict', icon: 'form', spm: '0007.0005.0000.0000', component: _import('sysadmin/dict/index'), name: '数据字典' }
@@ -332,15 +348,16 @@ export const routeMap = {
   '0': constantRouterMap,
   '1': goodsRouter,
   '2': wmsRouter,
-  '3': userRouter,
-  '4': operateRouter,
-  '5': marketRouter,
-  '6': cmsRouter,
-  '7': tradeRouter,
-  '8': financeRouter,
-  '9': logisticRouter,
-  '10': scheduleRouter,
-  '11': systemRouter
+  '3': shopRouter,
+  '4': userRouter,
+  '5': operateRouter,
+  '6': marketRouter,
+  '7': cmsRouter,
+  '8': tradeRouter,
+  '9': financeRouter,
+  '10': logisticRouter,
+  '11': scheduleRouter,
+  '12': systemRouter
 }
 export default new Router({
   // mode: 'history', // require service support
@@ -348,6 +365,7 @@ export default new Router({
   routes: [...constantRouterMap,
     ...goodsRouter,
     ...wmsRouter,
+    ...shopRouter,
     ...userRouter,
     ...operateRouter,
     ...marketRouter,

@@ -175,6 +175,28 @@
           })
         }
       },
+      batchDelete() {
+        var checkKeys = this.$refs.menuTree.getCheckedKeys()
+        if (checkKeys == null || checkKeys.length <= 0) {
+          this.$message.warning('请选择要删除的资源')
+          return
+        }
+        this.$confirm('确定删除?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          // this.$http.get(api.SYS_MENU_DELETE + '?menuIds=' + checkKeys.join(','))
+          //   .then(res => {
+          //     this.$message('操作成功')
+          //     this.load()
+          //   }).catch(e => {
+          //     this.$message('操作成功')
+          //     console.log(checkKeys)
+          //     this.batchDeleteFromTree(this.menuTree, checkKeys)
+          //   })
+        })
+      },
       getResourceTree() {
         getResourceTree()
           .then(res => {

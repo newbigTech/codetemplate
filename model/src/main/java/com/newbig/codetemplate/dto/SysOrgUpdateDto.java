@@ -19,11 +19,11 @@ import java.util.Date;
 public class SysOrgUpdateDto {
     @ApiModelProperty("id")
     @NotNull(message = "id不能为空")
-    private Integer id;
+    private Long id;
     @ApiModelProperty("name")
     @NotEmpty(message = "name 不能为空")
     private String name;
     @ApiModelProperty("parentId")
-    private Integer parentId;
+    private Long parentId;
 
 }

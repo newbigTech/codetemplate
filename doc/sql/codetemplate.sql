@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : local
+ Source Server         : aa
  Source Server Type    : MySQL
  Source Server Version : 50722
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 50722
  File Encoding         : 65001
 
- Date: 03/06/2018 15:48:49
+ Date: 01/07/2018 23:57:46
 */
 
 SET NAMES utf8mb4;
@@ -23,16 +23,17 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `sys_dict`;
 CREATE TABLE `sys_dict`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `namespace` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `key` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `category` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `key_name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `value` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `gmt_create` datetime(0) DEFAULT NULL,
   `gmt_modify` datetime(0) DEFAULT NULL,
   `creator` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `modifier` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT NULL,
+  `sort` int(11) DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for sys_org
@@ -51,7 +52,7 @@ CREATE TABLE `sys_org`  (
   `ancesstor_id` int(11) DEFAULT NULL COMMENT '根节点',
   `level` int(11) DEFAULT NULL COMMENT '级别',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for sys_resource
@@ -72,16 +73,17 @@ CREATE TABLE `sys_resource`  (
   `creator` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `modifier` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT NULL,
+  `sort` int(10) DEFAULT NULL COMMENT 'sort',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for sys_role_resources
+-- Table structure for sys_role
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_role_resources`;
-CREATE TABLE `sys_role_resources`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `org_id` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '所属组织id',
+DROP TABLE IF EXISTS `sys_role`;
+CREATE TABLE `sys_role`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `org_id` bigint(45) DEFAULT NULL COMMENT '所属组织id',
   `resource_ids` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '有权限的资源id',
   `gmt_create` datetime(0) DEFAULT NULL,
   `gmt_modify` datetime(0) DEFAULT NULL,
@@ -89,8 +91,9 @@ CREATE TABLE `sys_role_resources`  (
   `modifier` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT NULL,
   `role_name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `org_ids` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '有权限的org_id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -112,11 +115,6 @@ CREATE TABLE `sys_user`  (
   `is_deleted` tinyint(1) DEFAULT 0 COMMENT '是否已删除',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of sys_user
--- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'qqq', 'ww', 'sss', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for sys_user_role

@@ -5,7 +5,7 @@
       </el-date-picker>
       <el-date-picker v-model="listQuery.gmtEnd" type="datetime" format="yyyy-MM-dd HH:mm:ss" style="width: 200px;" class="filter-item" placeholder="结束时间">
       </el-date-picker>
-      <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="角色名称" v-model="listQuery.name">
+      <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="角色名称" v-model="listQuery.roleName">
       </el-input>
 
       <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
@@ -18,9 +18,9 @@
       <el-table-column prop='id' type='selection' width='45'>
       </el-table-column>
 
-      <el-table-column min-width="70px" prop='name' label="角色名称">
+      <el-table-column min-width="70px" prop='roleName' label="角色名称">
       </el-table-column>
-      <el-table-column prop='companyName' label='所属组织'>
+      <el-table-column prop='orgName' label='所属组织'>
       </el-table-column>
       <el-table-column prop='gmtCreate' label='创建时间' width='200'>
       </el-table-column>
@@ -50,12 +50,12 @@
         <el-row :gutter="0">
           <el-col :span="12">
             <el-form-item label="角色名称">
-              <el-input v-model="temp.name"></el-input>
+              <el-input v-model="temp.roleName"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12" align="center">
-            <el-form-item label="所属公司">
-              <el-autocomplete v-model="temp.companyName" :fetch-suggestions="searchCompany" placeholder="请输入公司名称" @select="handleCompanySelect" style="width: 200px;">
+          <el-col :span="12">
+            <el-form-item label="所属部门">
+              <el-autocomplete v-model="temp.orgName" :fetch-suggestions="searchOrg" placeholder="请输入部门名称" @select="handleorgSelect" style="width: 200px;">
               </el-autocomplete>
             </el-form-item>
           </el-col>
@@ -66,19 +66,21 @@
               <el-tree  ref="resourceTree" :data="resourceTree" show-checkbox highlight-current :render-content="renderContent"
                        clearable node-key="id" :default-checked-keys="resourceIds" :props="defaultProps">
               </el-tree>
+              <div v-show="!orgLoading" class="pagination-container">
+                <el-pagination
+                  :page-sizes="[listQuery.limit]" :page-size="listQuery.limit" layout="total, prev, pager, next" :total="orgtotal">
+                </el-pagination>
+              </div>
             </el-form-item>
           </el-col>
-          <el-col :span="12" align="center">
-            <el-form-item label="数据权限">
-              <el-table ref="companyTable" :key='1' :data='companylist' v-loading='companyLoading' @selection-change="handleCompanyIdsChange" element-loading-text='拼命加载中' border fit highlight-current-row style='width: 100%'>
-                <el-table-column prop='id' type='selection' width='45'>
-                </el-table-column>
-                <el-table-column min-width='70px' prop='name' label='公司名称'>
-                </el-table-column>
-              </el-table>
-              <div v-show="!companyLoading" class="pagination-container">
+          <el-col :span="12">
+            <el-form-item label="组织权限">
+              <el-tree  ref="orgTree" :data="orgTree" show-checkbox highlight-current :render-content="renderContent"
+                        clearable node-key="id" :default-checked-keys="resourceIds" :props="defaultProps">
+              </el-tree>
+              <div v-show="!orgLoading" class="pagination-container">
                 <el-pagination
-                               :page-sizes="[listQuery.limit]" :page-size="listQuery.limit" layout="total, prev, pager, next" :total="companytotal">
+                  :page-sizes="[listQuery.limit]" :page-size="listQuery.limit" layout="total, prev, pager, next" :total="orgtotal">
                 </el-pagination>
               </div>
             </el-form-item>
@@ -101,7 +103,7 @@ import * as moment from 'moment'
 import request from '@/utils/request'
 import selectTree from '@/components/selectTree.vue'
 import treeter from '@/components/treeter'
-import { fetchSysUserRoleList } from '../../../api/sysadmin'
+import { fetchSysRoleList, getResourceTree, getSysOrgTree, getSysOrgList } from '../../../api/sysadmin'
 export default {
   name: 'role',
   directives: {
@@ -120,28 +122,28 @@ export default {
       },
       list: null,
       total: null,
-      companylist: null,
-      companytotal: null,
+      orgTree: null,
+      orgtotal: null,
       listLoading: true,
-      companyLoading: false,
+      orgLoading: false,
       listQuery: {
         page: 1,
         limit: 20,
-        name: '',
+        roleName: '',
         gmtBegin: '',
         gmtEnd: ''
       },
       temp: {
         id: '',
         name: '',
-        companyId: '',
-        companyName: '',
+        orgId: '',
+        orgName: '',
         resourceIds: [],
-        companyIds: []
+        orgIds: []
       },
       resourceTree: [],
       resourceIds: [],
-      companyIds: [],
+      orgIds: [],
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
@@ -169,8 +171,9 @@ export default {
       this.listLoading = true
       const begin = this.listQuery.gmtBegin === '' ? '' : moment(this.listQuery.gmtBegin).format('YYYY-MM-DD HH:mm:ss')
       const end = this.listQuery.gmtEnd === '' ? '' : moment(this.listQuery.gmtEnd).format('YYYY-MM-DD HH:mm:ss')
-      fetchSysUserRoleList('name=' + this.listQuery.name + '&gmtBegin=' + begin + '&gmtEnd=' + end +
-        '&pageSize=' + this.listQuery.limit + '&pageNum=' + this.listQuery.page)
+      const query = 'name=' + this.listQuery.name + '&gmtBegin=' + begin + '&gmtEnd=' + end +
+                    '&pageSize=' + this.listQuery.limit + '&pageNum=' + this.listQuery.page
+      fetchSysRoleList(query)
         .then(res => {
           this.list = res.data.result.list
           this.total = res.data.result.total
@@ -178,33 +181,34 @@ export default {
         })
     },
     getResourceList() {
-      request('/resources/tree')
+      getResourceTree()
         .then(res => {
           this.resourceTree = []
-          this.resourceTree.push(...res.data.result)
+          this.resourceTree.push(...res.data.result.list)
         })
     },
-    getCompanyList(row) {
-      this.companyLoading = true
-      request('/company/all')
+    getSysOrgTree(row) {
+      this.orgLoading = true
+      getSysOrgTree('')
         .then(res => {
-          this.companylist = res.data.result.list
-          this.companytotal = res.data.result.total
-          this.companyLoading = false
+          this.orgTree = res.data.result.list
+          this.orgtotal = res.data.result.total
+          this.orgLoading = false
           if (row != undefined) {
             setTimeout(() => {
-              this.$refs.companyTable.clearSelection()
-              this.companylist.forEach(row => {
-                if (this.companyIds.indexOf(parseInt(row.id)) >= 0) {
-                  this.$refs.companyTable.toggleRowSelection(row, true);
+              this.$refs.orgTable.clearSelection()
+              this.orgTree.forEach(row => {
+                if (this.orgIds.indexOf(parseInt(row.id)) >= 0) {
+                  this.$refs.orgTable.toggleRowSelection(row, true);
                 }
               });
             }, 0)
           }
         })
     },
-    searchCompany(name, cb) {
-      request('/company/list?name=' + name)
+    searchOrg(name, cb) {
+      const query = 'name='+name
+      getSysOrgList(query)
         .then(res => {
           const results = res.data.result.list.map((result) => {
             return { value: result.name, id: result.id }
@@ -212,8 +216,8 @@ export default {
           cb(results)
         })
     },
-    handleCompanySelect(item) {
-      this.temp.companyId = item.id
+    handleorgSelect(item) {
+      this.temp.orgId = item.id
     },
     handleFilter() {
       this.listQuery.page = 1
@@ -229,7 +233,7 @@ export default {
     },
     handleCreate() {
       this.getResourceList()
-      this.getCompanyList()
+      this.getSysOrgTree()
       this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
@@ -239,21 +243,21 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row)
-      this.companyIds = JSON.parse(this.temp.companyIds)
+      this.orgIds = JSON.parse(this.temp.orgIds)
       this.getResourceList()
-      this.getCompanyList(row)
-      this.temp.companyIds = []
-      this.temp.companyIds.push(...this.companyIds)
+      this.getSysOrgTree(row)
+      this.temp.orgIds = []
+      this.temp.orgIds.push(...this.orgIds)
       this.resourceIds = JSON.parse(this.temp.resourceIds)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
     },
-    handleCompanyIdsChange(vals){
+    handleorgIdsChange(vals){
       const tempIds = []
        vals.forEach(val => {
            tempIds.push(val.id)
       });
-      this.temp.companyIds = tempIds
+      this.temp.orgIds = tempIds
     },
     handleDelete(userId, status) {
       this.listLoading = true
@@ -324,10 +328,10 @@ export default {
       this.temp = {
         id: '',
         name: '',
-        companyId: '',
-        companyName: '',
+        orgId: '',
+        orgName: '',
         resourceIds: [],
-        companyIds: []
+        orgIds: []
       }
     }
   }

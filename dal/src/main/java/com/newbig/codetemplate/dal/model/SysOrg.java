@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class SysOrg {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     /**
      * 部门名称
@@ -21,7 +21,7 @@ public class SysOrg {
      * 父节点
      */
     @Column(name = "parent_id")
-    private Integer parentId;
+    private Long parentId;
 
     /**
      * 创建时间
@@ -75,14 +75,14 @@ public class SysOrg {
     /**
      * @return id
      */
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
     /**
      * @param id
      */
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -109,7 +109,7 @@ public class SysOrg {
      *
      * @return parent_id - 父节点
      */
-    public Integer getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
@@ -118,7 +118,7 @@ public class SysOrg {
      *
      * @param parentId 父节点
      */
-    public void setParentId(Integer parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 

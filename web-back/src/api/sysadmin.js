@@ -7,9 +7,9 @@ export function fetchSysUserList(query) {
   })
 }
 
-export function fetchSysUserRoleList(query) {
+export function fetchSysRoleList(query) {
   return request({
-    url: '/api/v1/sysUserRole/list?' + query,
+    url: '/api/v1/sysRole/list?' + query,
     method: 'get'
   })
 }
@@ -44,6 +44,13 @@ export function deleteSysDict(id) {
 }
 
 export function getSysOrgTree(query) {
+  return request({
+    url: '/api/v1/sysOrg/tree?' + query,
+    method: 'get'
+  })
+}
+
+export function getSysOrgList(query) {
   return request({
     url: '/api/v1/sysOrg/list?' + query,
     method: 'get'
